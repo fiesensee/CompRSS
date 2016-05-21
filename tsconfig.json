@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "removeComments": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "declaration": false,
+    "noLib": false
+  },
+  "filesGlob": [
+    "**/*.ts",
+    "**/*.tsx",
+    "!node_modules/**"
+  ],
+  "compileOnSave": false,
+  "atom": {
+    "rewriteTsconfig": true
+  },
+  "files": [
+    "src/main.ts",
+    "typings/globals/github-electron/index.d.ts",
+    "typings/globals/node/index.d.ts",
+    "typings/index.d.ts"
+  ]
+}
