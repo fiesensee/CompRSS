@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <app>Loading...</app>
+  </body>
+
+  <script src='../node_modules/angular2/bundles/angular2-polyfills.js'></script>
+
+  <script>
+    // You can also require other files to run in this process
+    require('./renderer.js');
+    require('./app/boot.js');
+    require('./app/components/app.component.js');
+  </script>
+  <!-- <script src='./app/boot.js'></script>
+  <script src='./app/components/app.component.js'></script>
+  <script src='./renderer.js')></script> -->
+
+</html>

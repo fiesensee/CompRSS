@@ -1,0 +1,23 @@
+{
+  "name": "comprss",
+  "description": "a small rss-feed app made with electorn and angularjs2",
+  "main": "dist/main.js",
+  "authors": [
+    "Felix Isensee"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "rss"
+  ],
+  "homepage": "https://github.com/fiesensee/CompRSS",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  }
+}

@@ -2,10 +2,11 @@
   "compilerOptions": {
     "target": "es6",
     "removeComments": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "module": "commonjs",
     "declaration": false,
-    "noLib": false
+    "noLib": false,
+    "experimentalDecorators": true
   },
   "filesGlob": [
     "**/*.ts",
@@ -17,9 +18,12 @@
     "rewriteTsconfig": true
   },
   "files": [
+    "src/app/boot.ts",
+    "src/app/components/app.component.ts",
     "src/main.ts",
     "typings/globals/github-electron/index.d.ts",
     "typings/globals/node/index.d.ts",
+    "typings/globals/zone.js/index.d.ts",
     "typings/index.d.ts"
   ]
 }
