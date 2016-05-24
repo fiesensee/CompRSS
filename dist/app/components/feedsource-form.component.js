@@ -9,23 +9,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require('angular2/core');
-const feedsource_component_1 = require('./feedsource.component');
-const feedsource_form_component_1 = require('./feedsource-form.component');
 const feedsource_1 = require('./feedsource');
 const feedsource_service_1 = require('./feedsource.service');
-let App = class App {
-    constructor(feedSourceComponent) {
-        this.feedSourceComponent = feedSourceComponent;
+const ConfigStore = require('configstore');
+let FeedSourceFormComponent = class FeedSourceFormComponent {
+    constructor(feedSourceService, feedsource) {
+        this.feedSourceService = feedSourceService;
+        this.feedsource = feedsource;
+        this.active = false;
+    }
+    switchActive() {
+        this.active = !this.active;
+    }
+    onSubmit() {
+        this.feedSourceService.saveFeedSource(this.feedsource);
+        this.feedsource = new feedsource_1.FeedSource('', '');
+        this.switchActive();
     }
 };
-App = __decorate([
+FeedSourceFormComponent = __decorate([
     core_1.Component({
-        selector: 'app',
-        templateUrl: './app/app.html',
-        providers: [feedsource_component_1.FeedSourceComponent, feedsource_form_component_1.FeedSourceFormComponent, feedsource_1.FeedSource, feedsource_service_1.FeedSourceService],
-        directives: [feedsource_component_1.FeedSourceComponent, feedsource_form_component_1.FeedSourceFormComponent]
+        selector: 'feedsource-form',
+        templateUrl: './app/feedsource-form.html',
+        providers: [feedsource_service_1.FeedSourceService, feedsource_1.FeedSource, ConfigStore]
     }),
     core_1.Injectable(), 
-    __metadata('design:paramtypes', [feedsource_component_1.FeedSourceComponent])
-], App);
-exports.App = App;
+    __metadata('design:paramtypes', [feedsource_service_1.FeedSourceService, feedsource_1.FeedSource])
+], FeedSourceFormComponent);
+exports.FeedSourceFormComponent = FeedSourceFormComponent;

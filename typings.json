@@ -7,5 +7,8 @@
   },
   "globalDependencies": {
     "zone.js": "registry:dt/zone.js#0.0.0+20160316155526"
+  },
+  "devDependencies": {
+    "configstore": "registry:npm/configstore#2.0.0+20160307015146"
   }
 }

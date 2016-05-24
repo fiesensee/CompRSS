@@ -2,13 +2,26 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CompRSS</title>
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="./app.css" />
   </head>
   <body>
-    <app>Loading...</app>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <app>Loading...</app>
+        </div>
+      </div>
+    </div>
   </body>
 
   <script src='../node_modules/angular2/bundles/angular2-polyfills.js'></script>
+  <script>
+    window.$ = window.jQuery = require('../bower_components/jquery/dist/jquery.min.js');
+  </script>
+  <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
   <script>
     // You can also require other files to run in this process

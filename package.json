@@ -21,6 +21,7 @@
   "homepage": "https://github.com/fiesensee/CompRSS#readme",
   "devDependencies": {
     "browserify": "^13.0.1",
+    "configstore": "^2.0.0",
     "electron-prebuilt": "^1.1.1",
     "gulp": "^3.9.1",
     "gulp-typescript": "^2.13.4",

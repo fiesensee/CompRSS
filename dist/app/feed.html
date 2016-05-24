@@ -1,0 +1,11 @@
+<label>Name:</label>
+<input [(ngModel)]="name" placeholder=""/>
+<br />
+<label>Url:</label>
+<input [(ngModel)]="url" />
+<br />
+<button (click)="getFeed()" >Submit</button>
+
+<p>
+  {{feed}}
+</p>

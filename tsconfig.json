@@ -6,7 +6,8 @@
     "module": "commonjs",
     "declaration": false,
     "noLib": false,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "filesGlob": [
     "**/*.ts",
@@ -20,10 +21,17 @@
   "files": [
     "src/app/boot.ts",
     "src/app/components/app.component.ts",
+    "src/app/components/feed.service.ts",
+    "src/app/components/feed.ts",
+    "src/app/components/feedsource-form.component.ts",
+    "src/app/components/feedsource.component.ts",
+    "src/app/components/feedsource.service.ts",
+    "src/app/components/feedsource.ts",
     "src/main.ts",
     "typings/globals/github-electron/index.d.ts",
     "typings/globals/node/index.d.ts",
     "typings/globals/zone.js/index.d.ts",
-    "typings/index.d.ts"
+    "typings/index.d.ts",
+    "typings/modules/configstore/index.d.ts"
   ]
 }
