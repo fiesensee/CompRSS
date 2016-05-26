@@ -1,5 +1,16 @@
-<div *ngFor="let feedSource of feedSources">
-  <div class="btn-group" role="group">
-    <button class="btn btn-default">{{feedSource.name}}</button>
+<div class="btn-group" role="group">
+  <button class="btn btn-default" (click)="changeExpand()">
+    {{feedSource.name}}<span style="padding-left: 10px" class="glyphicon"
+    [ngClass]="{'glyphicon-chevron-down': !expanded,
+    'glyphicon-chevron-up': expanded}"></span>
+  </button>
+  <button class="btn btn-danger"><span class="glyphicon glyphicon-remove"
+    (click)="delete()"></span></button>
+  <div class="row" *ngIf="expanded">
+    <div class="col-xs-3">
+      <div *ngFor="let feed of feeds">
+        <feed [feed]="feed"></feed>
+      </div>
+    </div>
   </div>
 </div>

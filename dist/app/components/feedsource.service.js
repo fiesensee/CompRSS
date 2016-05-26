@@ -10,24 +10,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require('angular2/core');
 const ConfigStore = require('configstore');
+const Subject_1 = require('rxjs/Subject');
 let FeedSourceService = class FeedSourceService {
-    constructor(config, feedSources) {
+    constructor(config) {
         this.config = config;
-        this.feedSources = feedSources;
-        this.feedSources = [];
-        this.config = new ConfigStore('FeedSources', { sources: this.feedSources });
+        this.feedSourcesSource = new Subject_1.Subject();
+        this.feedSources$ = this.feedSourcesSource.asObservable();
+        this.config = new ConfigStore('FeedSources');
     }
-    saveFeedSource(feedsource) {
-        this.feedSources = this.config.get('sources');
-        this.feedSources.push(feedsource);
-        this.config.set('sources', this.feedSources);
+    saveFeedSource(feedSource) {
+        let feedSources = this.config.get('sources');
+        feedSources.push(feedSource);
+        this.config.set('sources', feedSources);
     }
     getFeedSources() {
-        return this.config.get('sources');
+        let feedSources = this.config.get('sources');
+        this.feedSourcesSource.next(feedSources);
+    }
+    deleteFeedSource(feedSource) {
+        let feedSources = this.config.get('sources');
+        let index = feedSources.findIndex(source => source.name == feedSource.name);
+        feedSources.splice(index, 1);
+        this.config.set('sources', feedSources);
     }
 };
 FeedSourceService = __decorate([
     core_1.Injectable(), 
-    __metadata('design:paramtypes', [ConfigStore, Object])
+    __metadata('design:paramtypes', [ConfigStore])
 ], FeedSourceService);
 exports.FeedSourceService = FeedSourceService;

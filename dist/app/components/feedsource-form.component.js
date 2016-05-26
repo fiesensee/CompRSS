@@ -17,12 +17,14 @@ let FeedSourceFormComponent = class FeedSourceFormComponent {
         this.feedSourceService = feedSourceService;
         this.feedsource = feedsource;
         this.active = false;
+        this.created = new core_1.EventEmitter();
     }
     switchActive() {
         this.active = !this.active;
     }
     onSubmit() {
         this.feedSourceService.saveFeedSource(this.feedsource);
+        this.created.emit('event');
         this.feedsource = new feedsource_1.FeedSource('', '');
         this.switchActive();
     }
@@ -31,7 +33,8 @@ FeedSourceFormComponent = __decorate([
     core_1.Component({
         selector: 'feedsource-form',
         templateUrl: './app/feedsource-form.html',
-        providers: [feedsource_service_1.FeedSourceService, feedsource_1.FeedSource, ConfigStore]
+        providers: [feedsource_service_1.FeedSourceService, feedsource_1.FeedSource, ConfigStore],
+        outputs: ['created']
     }),
     core_1.Injectable(), 
     __metadata('design:paramtypes', [feedsource_service_1.FeedSourceService, feedsource_1.FeedSource])

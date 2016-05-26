@@ -21,6 +21,7 @@
   "files": [
     "src/app/boot.ts",
     "src/app/components/app.component.ts",
+    "src/app/components/feed.component.ts",
     "src/app/components/feed.service.ts",
     "src/app/components/feed.ts",
     "src/app/components/feedsource-form.component.ts",
@@ -29,6 +30,7 @@
     "src/app/components/feedsource.ts",
     "src/main.ts",
     "typings/globals/github-electron/index.d.ts",
+    "typings/globals/jquery/index.d.ts",
     "typings/globals/node/index.d.ts",
     "typings/globals/zone.js/index.d.ts",
     "typings/index.d.ts",

@@ -10,23 +10,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const http_1 = require('angular2/http');
 const core_1 = require('angular2/core');
-const feedsource_1 = require('./feedsource');
 const feedsource_service_1 = require('./feedsource.service');
+const common_1 = require('angular2/common');
+const feed_service_1 = require('./feed.service');
+const feed_component_1 = require('./feed.component');
 let FeedSourceComponent = class FeedSourceComponent {
-    constructor(http, feedSources, feedSourceService) {
+    constructor(feedService, http, feedSourceService) {
+        this.feedService = feedService;
         this.http = http;
-        this.feedSources = feedSources;
         this.feedSourceService = feedSourceService;
-        this.feedSources = this.feedSourceService.getFeedSources();
+        this.expanded = false;
+        this.deleted = new core_1.EventEmitter();
+        this.feedService.feeds$.subscribe(feeds => this.feeds = feeds);
+    }
+    ngOnInit() {
+        this.feedService.getFeeds(this.feedSource);
+    }
+    changeExpand() {
+        this.expanded = !this.expanded;
+    }
+    delete() {
+        this.feedSourceService.deleteFeedSource(this.feedSource);
+        this.deleted.emit('event');
     }
 };
 FeedSourceComponent = __decorate([
     core_1.Component({
-        selector: 'feedsources',
+        selector: 'feedsource',
         templateUrl: './app/feedsources.html',
-        providers: [http_1.Http, http_1.HTTP_PROVIDERS]
+        providers: [http_1.HTTP_PROVIDERS, feed_service_1.FeedService, feedsource_service_1.FeedSourceService],
+        directives: [common_1.NgClass, feed_component_1.FeedComponent],
+        inputs: ['feedSource'],
+        outputs: ['deleted']
     }),
     core_1.Injectable(), 
-    __metadata('design:paramtypes', [http_1.Http, feedsource_1.FeedSource, feedsource_service_1.FeedSourceService])
+    __metadata('design:paramtypes', [feed_service_1.FeedService, http_1.Http, feedsource_service_1.FeedSourceService])
 ], FeedSourceComponent);
 exports.FeedSourceComponent = FeedSourceComponent;

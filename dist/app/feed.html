@@ -1,11 +1,8 @@
-<label>Name:</label>
-<input [(ngModel)]="name" placeholder=""/>
-<br />
-<label>Url:</label>
-<input [(ngModel)]="url" />
-<br />
-<button (click)="getFeed()" >Submit</button>
-
-<p>
-  {{feed}}
-</p>
+<a class="btn btn-default" href="{{feed.link}}">
+  <h3 style="border-style: 3px solid black;">
+    {{feed.title}}<small>{{feed.date}}</small>
+  </h3>
+  <p>
+    {{feed.text}}
+  </p>
+</a>

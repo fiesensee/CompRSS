@@ -9,23 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require('angular2/core');
+const http_1 = require('angular2/http');
+const feedsource_1 = require('./feedsource');
 const feedsource_component_1 = require('./feedsource.component');
 const feedsource_form_component_1 = require('./feedsource-form.component');
-const feedsource_1 = require('./feedsource');
 const feedsource_service_1 = require('./feedsource.service');
+const ConfigStore = require('configstore');
 let App = class App {
-    constructor(feedSourceComponent) {
-        this.feedSourceComponent = feedSourceComponent;
+    constructor(feedSourceService) {
+        this.feedSourceService = feedSourceService;
+        this.feedSourceService.feedSources$.subscribe(sources => this.feedSources = sources);
+    }
+    ngOnInit() {
+        this.feedSourceService.getFeedSources();
+    }
+    refresh() {
+        this.feedSourceService.getFeedSources();
     }
 };
 App = __decorate([
     core_1.Component({
         selector: 'app',
         templateUrl: './app/app.html',
-        providers: [feedsource_component_1.FeedSourceComponent, feedsource_form_component_1.FeedSourceFormComponent, feedsource_1.FeedSource, feedsource_service_1.FeedSourceService],
-        directives: [feedsource_component_1.FeedSourceComponent, feedsource_form_component_1.FeedSourceFormComponent]
+        providers: [http_1.HTTP_PROVIDERS, feedsource_1.FeedSource, feedsource_service_1.FeedSourceService, ConfigStore],
+        directives: [feedsource_form_component_1.FeedSourceFormComponent, feedsource_component_1.FeedSourceComponent]
     }),
     core_1.Injectable(), 
-    __metadata('design:paramtypes', [feedsource_component_1.FeedSourceComponent])
+    __metadata('design:paramtypes', [feedsource_service_1.FeedSourceService])
 ], App);
 exports.App = App;

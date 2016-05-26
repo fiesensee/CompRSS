@@ -1,9 +1,4 @@
 <div class="container-fluid">
-  <div class="row">
-    <div style="padding-left: 40%">
-      <button (click)="refresh()">Refresh all FeedSources</button>
-    </div>
-  </div>
 
   <div class="row">
       <!-- <div *ngIf="new==true">
@@ -12,7 +7,11 @@
         </p>
       </div>
       <feed>loading...</feed> -->
-      <feedsource-form></feedsource-form>
-      <feedsources></feedsources>
+      <div class="col-xs-1">
+        <feedsource-form (created)="refresh()"></feedsource-form>
+      </div>
+      <div class="col-xs-3" *ngFor="let feedSource of feedSources">
+        <feedsource [feedSource]="feedSource" (deleted)="refresh()"></feedsource>
+      </div>
   </div>
 </div>
