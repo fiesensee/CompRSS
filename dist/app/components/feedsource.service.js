@@ -8,15 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const core_1 = require('angular2/core');
-const ConfigStore = require('configstore');
+const core_1 = require('@angular/core');
 const Subject_1 = require('rxjs/Subject');
+const Configstore = require('configstore');
 let FeedSourceService = class FeedSourceService {
-    constructor(config) {
-        this.config = config;
+    constructor() {
         this.feedSourcesSource = new Subject_1.Subject();
         this.feedSources$ = this.feedSourcesSource.asObservable();
-        this.config = new ConfigStore('FeedSources');
+        this.config = new Configstore('FeedSources');
     }
     saveFeedSource(feedSource) {
         let feedSources = this.config.get('sources');
@@ -36,6 +35,6 @@ let FeedSourceService = class FeedSourceService {
 };
 FeedSourceService = __decorate([
     core_1.Injectable(), 
-    __metadata('design:paramtypes', [ConfigStore])
+    __metadata('design:paramtypes', [])
 ], FeedSourceService);
 exports.FeedSourceService = FeedSourceService;

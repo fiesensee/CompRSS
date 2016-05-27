@@ -1,15 +1,15 @@
-import {Component, Injectable, Inject} from 'angular2/core';
-import {HTTP_PROVIDERS, Http} from 'angular2/http';
+import {Component, Injectable, Inject} from '@angular/core';
+import {HTTP_PROVIDERS, Http} from '@angular/http';
 import {FeedSource} from './feedsource';
 import {FeedSourceComponent} from './feedsource.component';
 import {FeedSourceFormComponent} from './feedsource-form.component';
 import {FeedSourceService} from './feedsource.service';
-import * as ConfigStore from 'configstore';
+
 
 @Component({
   selector: 'app',
   templateUrl: './app/app.html',
-  providers: [HTTP_PROVIDERS, FeedSource, FeedSourceService, ConfigStore],
+  providers: [FeedSourceService, HTTP_PROVIDERS],
   directives: [FeedSourceFormComponent, FeedSourceComponent]
 })
 
@@ -18,6 +18,7 @@ export class App {
 
   public feedSources: FeedSource[];
   constructor(private feedSourceService: FeedSourceService){
+  // constructor(){
     this.feedSourceService.feedSources$.subscribe(sources => this.feedSources = sources)
   }
 

@@ -1,8 +1,10 @@
-<a class="btn btn-default" href="{{feed.link}}">
-  <h3 style="border-style: 3px solid black;">
-    {{feed.title}}<small>{{feed.date}}</small>
-  </h3>
-  <p>
-    {{feed.text}}
-  </p>
-</a>
+<div class="panel panel-info">
+    <button class="panel-heading" (click)="changeExpand()">
+      <h4 class="panel-title">
+        <a class="" (click)="redirectToSource()">
+          {{feed.title}}<br /><small>{{feed.date}}</small>
+        </a>
+      </h4>
+    </button>
+    <div class="panel-body" *ngIf="expanded" [innerHTML]="feed.text"></div>
+</div>

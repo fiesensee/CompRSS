@@ -1,8 +1,8 @@
 /// <reference path="../../../typings/globals/jquery/index.d.ts"/>
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {Feed} from './feed'
 import {FeedSource} from './feedsource'
-import {Http} from 'angular2/http';
+import {Http} from '@angular/http';
 import * as jQuery from 'jquery';
 import {Subject} from 'rxjs/Subject';
 
@@ -19,14 +19,12 @@ export class FeedService{
     let feeds: Feed[] = [];
     let xmlDoc = jQuery.parseXML(xml);
     let $xml = $( xmlDoc );
-    let $entries = $xml.find('entry').each(function() {
-      let feed: Feed = new Feed('','','','');
+    let $entries = $xml.find('item').each(function() {
+      let feed: Feed = new Feed('','','', new Date());
       feed.title = $(this).find('title').text();
-      feed.text = $(this).find('summary').text();
-      feed.url = $(this).find('link').attr('href').toString();
-      feed.date = $(this).find('updated').text();
-      // console.log($(this).find('link').attr('href').toString());
-      // console.log('test');
+      feed.text = $(this).find('description').text();
+      feed.url = $(this).find('link').text();
+      feed.date = new Date($(this).find('pubDate').text());
       feeds.push(feed);
     })
     this.feedsSource.next(feeds);

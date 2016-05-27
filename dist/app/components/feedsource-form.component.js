@@ -8,16 +8,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const core_1 = require('angular2/core');
+const core_1 = require('@angular/core');
 const feedsource_1 = require('./feedsource');
 const feedsource_service_1 = require('./feedsource.service');
-const ConfigStore = require('configstore');
 let FeedSourceFormComponent = class FeedSourceFormComponent {
-    constructor(feedSourceService, feedsource) {
+    constructor(feedSourceService) {
         this.feedSourceService = feedSourceService;
-        this.feedsource = feedsource;
         this.active = false;
         this.created = new core_1.EventEmitter();
+        this.feedsource = new feedsource_1.FeedSource('', '');
     }
     switchActive() {
         this.active = !this.active;
@@ -33,10 +32,10 @@ FeedSourceFormComponent = __decorate([
     core_1.Component({
         selector: 'feedsource-form',
         templateUrl: './app/feedsource-form.html',
-        providers: [feedsource_service_1.FeedSourceService, feedsource_1.FeedSource, ConfigStore],
+        providers: [feedsource_service_1.FeedSourceService],
         outputs: ['created']
     }),
     core_1.Injectable(), 
-    __metadata('design:paramtypes', [feedsource_service_1.FeedSourceService, feedsource_1.FeedSource])
+    __metadata('design:paramtypes', [feedsource_service_1.FeedSourceService])
 ], FeedSourceFormComponent);
 exports.FeedSourceFormComponent = FeedSourceFormComponent;

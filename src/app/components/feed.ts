@@ -3,6 +3,6 @@ export class Feed {
     public title: string,
     public text: string,
     public url: string,
-    public date: string
+    public date: Date
   ) {}
 }

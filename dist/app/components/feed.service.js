@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const core_1 = require('angular2/core');
+const core_1 = require('@angular/core');
 const feed_1 = require('./feed');
-const http_1 = require('angular2/http');
+const http_1 = require('@angular/http');
 const jQuery = require('jquery');
 const Subject_1 = require('rxjs/Subject');
 let FeedService = class FeedService {
@@ -26,12 +26,12 @@ let FeedService = class FeedService {
         let feeds = [];
         let xmlDoc = jQuery.parseXML(xml);
         let $xml = $(xmlDoc);
-        let $entries = $xml.find('entry').each(function () {
-            let feed = new feed_1.Feed('', '', '', '');
+        let $entries = $xml.find('item').each(function () {
+            let feed = new feed_1.Feed('', '', '', new Date());
             feed.title = $(this).find('title').text();
-            feed.text = $(this).find('summary').text();
-            feed.url = $(this).find('link').attr('href').toString();
-            feed.date = $(this).find('updated').text();
+            feed.text = $(this).find('description').text();
+            feed.url = $(this).find('link').text();
+            feed.date = new Date($(this).find('pubDate').text());
             feeds.push(feed);
         });
         this.feedsSource.next(feeds);

@@ -1,8 +1,8 @@
-import {Http, Response, HTTP_PROVIDERS} from 'angular2/http';
-import {Component, Injectable, Input, EventEmitter} from 'angular2/core';
+import {Http, Response, HTTP_PROVIDERS} from '@angular/http';
+import {Component, Injectable, Inject, Input, EventEmitter, forwardRef} from '@angular/core';
 import {FeedSource} from './feedsource';
 import {FeedSourceService} from './feedsource.service';
-import {NgClass} from 'angular2/common';
+import {NgClass} from '@angular/common';
 import {Feed} from './feed';
 import {FeedService} from './feed.service';
 import {FeedComponent} from './feed.component';
@@ -19,9 +19,9 @@ import {FeedComponent} from './feed.component';
 export class FeedSourceComponent {
   public expanded: boolean = false;
   public feeds: Feed[];
-  public feedSource: FeedSource
+  public feedSource: FeedSource;
   public deleted = new EventEmitter();
-  constructor(private feedService: FeedService, private http: Http, private feedSourceService: FeedSourceService) {
+  constructor(private feedService: FeedService, private feedSourceService: FeedSourceService) {
     this.feedService.feeds$.subscribe(feeds => this.feeds = feeds);
   }
 
@@ -31,6 +31,7 @@ export class FeedSourceComponent {
 
   public changeExpand() {
     this.expanded = !this.expanded;
+    this.feedService.getFeeds(this.feedSource);
   }
 
   public delete() {

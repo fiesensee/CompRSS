@@ -1,18 +1,21 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "removeComments": true,
-    "noImplicitAny": false,
     "module": "commonjs",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": true,
     "declaration": false,
     "noLib": false,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "noImplicitAny": false
   },
   "filesGlob": [
     "**/*.ts",
     "**/*.tsx",
-    "!node_modules/**"
+    "!node_modules/**",
+    "!jspm_packages/**",
+    "!typings/**"
   ],
   "compileOnSave": false,
   "atom": {
@@ -28,12 +31,6 @@
     "src/app/components/feedsource.component.ts",
     "src/app/components/feedsource.service.ts",
     "src/app/components/feedsource.ts",
-    "src/main.ts",
-    "typings/globals/github-electron/index.d.ts",
-    "typings/globals/jquery/index.d.ts",
-    "typings/globals/node/index.d.ts",
-    "typings/globals/zone.js/index.d.ts",
-    "typings/index.d.ts",
-    "typings/modules/configstore/index.d.ts"
+    "src/main.ts"
   ]
 }
