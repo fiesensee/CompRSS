@@ -21,30 +21,11 @@
   <script src="../node_modules/zone.js/dist/zone.js"></script>
   <script src="../node_modules/reflect-metadata/Reflect.js"></script>
   <script src="../bower_components/jquery/dist/jquery.js"></script>
-  <!-- <script>
-    window.requireNode = require;
-  </script> -->
-
-
-  <!-- <script>
-    // You can also require other files to run in this process
-    require("../node_modules/core-js/client/shim.min.js");
-    require("../node_modules/zone.js/dist/zone.js")
-    require("../node_modules/reflect-metadata/Reflect.js")
-    require('../node_modules/systemjs/dist/system.js');
-    require('./renderer.js');
-    require('./app/boot.js');
-    require('./app/components/app.component.js');
-  </script> -->
 
   <script src="../jspm_packages/system.js"></script>
   <script src="../config.js"></script>
   <script>
     System.import("./app/boot.js");
-  </script>
-
-  <script>
-    window.$ = window.jQuery = require('../bower_components/jquery/dist/jquery.js');
   </script>
   <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 

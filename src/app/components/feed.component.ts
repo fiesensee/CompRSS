@@ -1,7 +1,6 @@
 ///<reference path="../../../typings/globals/open/index.d.ts"/>
 import {Component} from '@angular/core';
 import {Feed} from './feed';
-import 'open';
 
 @Component({
   selector: 'feed',
@@ -13,7 +12,6 @@ export class FeedComponent {
   public expanded: boolean = false;
 
   redirectToSource() {
-    open(this.feed.url);
   }
 
   changeExpand(){

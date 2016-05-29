@@ -20,7 +20,11 @@ let FeedService = class FeedService {
         this.feeds$ = this.feedsSource.asObservable();
     }
     getFeeds(source) {
-        this.http.get(source.url).subscribe(res => this.parseRSS(res.text()));
+        let headers = new http_1.Headers();
+        headers.append('Access-Control-Allow-Origin', '*');
+        headers.append('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        headers.append('Access-Control-Allow-Methods', 'POST,PUT,GET,DELETE,OPTIONS');
+        this.http.get('http://cors.io/?u=' + source.url).subscribe(res => this.parseRSS(res.text()));
     }
     parseRSS(xml) {
         let feeds = [];

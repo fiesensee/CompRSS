@@ -10,27 +10,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require('@angular/core');
 const Subject_1 = require('rxjs/Subject');
-const Configstore = require('configstore');
 let FeedSourceService = class FeedSourceService {
     constructor() {
         this.feedSourcesSource = new Subject_1.Subject();
         this.feedSources$ = this.feedSourcesSource.asObservable();
-        this.config = new Configstore('FeedSources');
+        this.feedSources = [
+            { 'name': 'heise', 'url': 'http://www.heise.de/newsticker/heise.rdf' }
+        ];
     }
     saveFeedSource(feedSource) {
-        let feedSources = this.config.get('sources');
-        feedSources.push(feedSource);
-        this.config.set('sources', feedSources);
     }
     getFeedSources() {
-        let feedSources = this.config.get('sources');
-        this.feedSourcesSource.next(feedSources);
+        this.feedSourcesSource.next(this.feedSources);
     }
     deleteFeedSource(feedSource) {
-        let feedSources = this.config.get('sources');
-        let index = feedSources.findIndex(source => source.name == feedSource.name);
-        feedSources.splice(index, 1);
-        this.config.set('sources', feedSources);
     }
 };
 FeedSourceService = __decorate([

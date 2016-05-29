@@ -9,13 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require('@angular/core');
-require('open');
 let FeedComponent = class FeedComponent {
     constructor() {
         this.expanded = false;
     }
     redirectToSource() {
-        open(this.feed.url);
     }
     changeExpand() {
         this.expanded = !this.expanded;
