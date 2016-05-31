@@ -9,21 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require('@angular/core');
-const feed_service_1 = require('../services/feed.service');
-const label_service_1 = require('../services/label.service');
-let FeedComponent = class FeedComponent {
-    constructor(feedService) {
-        this.feedService = feedService;
-        this.feedService.feeds$.subscribe(feeds => this.feeds = feeds);
+const Subject_1 = require('rxjs/Subject');
+let FeedSourceService = class FeedSourceService {
+    constructor() {
+        this.feedSourcesSource = new Subject_1.Subject();
+        this.feedSources$ = this.feedSourcesSource.asObservable();
+        this.feedSources = [
+            { 'name': 'heise', 'url': 'http://www.heise.de/newsticker/heise.rdf' }
+        ];
+    }
+    saveFeedSource(feedSource) {
+    }
+    getFeedSources() {
+        this.feedSourcesSource.next(this.feedSources);
+    }
+    deleteFeedSource(feedSource) {
     }
 };
-FeedComponent = __decorate([
-    core_1.Component({
-        selector: 'feeds',
-        templateUrl: './app/feed.html',
-        providers: [feed_service_1.FeedService, label_service_1.LabelService]
-    }),
+FeedSourceService = __decorate([
     core_1.Injectable(), 
-    __metadata('design:paramtypes', [feed_service_1.FeedService])
-], FeedComponent);
-exports.FeedComponent = FeedComponent;
+    __metadata('design:paramtypes', [])
+], FeedSourceService);
+exports.FeedSourceService = FeedSourceService;

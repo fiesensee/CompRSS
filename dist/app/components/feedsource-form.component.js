@@ -9,14 +9,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require('@angular/core');
-const feedsource_1 = require('./feedsource');
-const feedsource_service_1 = require('./feedsource.service');
+const feedsource_1 = require('../models/feedsource');
+const feedsource_service_1 = require('../services/feedsource.service');
 let FeedSourceFormComponent = class FeedSourceFormComponent {
     constructor(feedSourceService) {
         this.feedSourceService = feedSourceService;
         this.active = false;
         this.created = new core_1.EventEmitter();
-        this.feedsource = new feedsource_1.FeedSource('', '');
+        this.feedsource = new feedsource_1.FeedSource('', '', '');
     }
     switchActive() {
         this.active = !this.active;
@@ -24,7 +24,7 @@ let FeedSourceFormComponent = class FeedSourceFormComponent {
     onSubmit() {
         this.feedSourceService.saveFeedSource(this.feedsource);
         this.created.emit('event');
-        this.feedsource = new feedsource_1.FeedSource('', '');
+        this.feedsource = new feedsource_1.FeedSource('', '', '');
         this.switchActive();
     }
 };

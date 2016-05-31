@@ -10,9 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const http_1 = require('@angular/http');
 const core_1 = require('@angular/core');
-const feedsource_service_1 = require('./feedsource.service');
+const feedsource_service_1 = require('../services/feedsource.service');
 const common_1 = require('@angular/common');
-const feed_service_1 = require('./feed.service');
+const feed_service_1 = require('../services/feed.service');
 const feed_component_1 = require('./feed.component');
 let FeedSourceComponent = class FeedSourceComponent {
     constructor(feedService, feedSourceService) {
@@ -23,11 +23,9 @@ let FeedSourceComponent = class FeedSourceComponent {
         this.feedService.feeds$.subscribe(feeds => this.feeds = feeds);
     }
     ngOnInit() {
-        this.feedService.getFeeds(this.feedSource);
     }
     changeExpand() {
         this.expanded = !this.expanded;
-        this.feedService.getFeeds(this.feedSource);
     }
     delete() {
         this.feedSourceService.deleteFeedSource(this.feedSource);

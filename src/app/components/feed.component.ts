@@ -1,20 +1,17 @@
-///<reference path="../../../typings/globals/open/index.d.ts"/>
-import {Component} from '@angular/core';
-import {Feed} from './feed';
+import {Component, Injectable} from '@angular/core';
+import {Feed} from '../models/feed';
+import {FeedService} from '../services/feed.service';
+import {LabelService} from '../services/label.service';
 
 @Component({
-  selector: 'feed',
+  selector: 'feeds',
   templateUrl: './app/feed.html',
-  inputs: ['feed']
+  providers: [FeedService, LabelService]
 })
+@Injectable()
 export class FeedComponent {
-  private feed: Feed;
-  public expanded: boolean = false;
-
-  redirectToSource() {
-  }
-
-  changeExpand(){
-    this.expanded = !this.expanded;
+  private feeds: Feed[];
+  constructor(private feedService: FeedService){
+    this.feedService.feeds$.subscribe(feeds => this.feeds = feeds)
   }
 }

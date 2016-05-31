@@ -23,14 +23,19 @@
   },
   "files": [
     "src/app/boot.ts",
-    "src/app/components/app.component.ts",
     "src/app/components/feed.component.ts",
-    "src/app/components/feed.service.ts",
-    "src/app/components/feed.ts",
     "src/app/components/feedsource-form.component.ts",
     "src/app/components/feedsource.component.ts",
-    "src/app/components/feedsource.service.ts",
-    "src/app/components/feedsource.ts",
+    "src/app/components/label.component.ts",
+    "src/app/components/reader.component.ts",
+    "src/app/components/router.component.ts",
+    "src/app/models/feed.ts",
+    "src/app/models/feedsource.ts",
+    "src/app/models/label.ts",
+    "src/app/services/feed.service.ts",
+    "src/app/services/feedsource.service.ts",
+    "src/app/services/label.service.ts",
+    "src/app/services/user.service.ts",
     "src/main.ts"
   ]
 }

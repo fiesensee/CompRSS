@@ -9,21 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require('@angular/core');
-const feed_service_1 = require('../services/feed.service');
-const label_service_1 = require('../services/label.service');
-let FeedComponent = class FeedComponent {
-    constructor(feedService) {
-        this.feedService = feedService;
-        this.feedService.feeds$.subscribe(feeds => this.feeds = feeds);
-    }
+let LabelComponent = class LabelComponent {
 };
-FeedComponent = __decorate([
-    core_1.Component({
-        selector: 'feeds',
-        templateUrl: './app/feed.html',
-        providers: [feed_service_1.FeedService, label_service_1.LabelService]
-    }),
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [feed_service_1.FeedService])
-], FeedComponent);
-exports.FeedComponent = FeedComponent;
+LabelComponent = __decorate([
+    core_1.Component({}), 
+    __metadata('design:paramtypes', [])
+], LabelComponent);
+exports.LabelComponent = LabelComponent;

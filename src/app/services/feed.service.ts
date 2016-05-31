@@ -1,7 +1,8 @@
 /// <reference path="../../../typings/globals/jquery/index.d.ts"/>
 import {Injectable} from '@angular/core';
-import {Feed} from './feed'
-import {FeedSource} from './feedsource'
+import {Feed} from '../models/feed';
+import {FeedSource} from '../models/feedsource';
+import {FeedSourceService} from './feedsource.service';
 import {Http, Headers} from '@angular/http';
 import * as jQuery from 'jquery';
 import {Subject} from 'rxjs/Subject';
@@ -10,13 +11,15 @@ import {Subject} from 'rxjs/Subject';
 export class FeedService{
   private feedsSource = new Subject<Feed[]>();
   public feeds$ = this.feedsSource.asObservable();
-  constructor(private http: Http){}
-  getFeeds(source: FeedSource){
-    let headers = new Headers();
-    headers.append('Access-Control-Allow-Origin', '*');
-    headers.append('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    headers.append('Access-Control-Allow-Methods', 'POST,PUT,GET,DELETE,OPTIONS');
-    this.http.get('http://cors.io/?u=' + source.url).subscribe(res => this.parseRSS(res.text()));
+  public feeds: Feed[] = [];
+    constructor(private http: Http, private feedSourceService: FeedSourceService){
+    this.feedSourceService.feedSources$.subscribe(feedSources => this.getFeeds(feedSources));
+  }
+  getFeeds(feedSources: FeedSource[]){
+    this.feeds = []
+    for (let feedSource of feedSources){
+      this.http.get('http://localhost:8000/proxy/' + feedSource.sourceUrl).subscribe(res => this.parseRSS(res.text()));
+    }
   }
 
   parseRSS(xml: string){
@@ -24,13 +27,15 @@ export class FeedService{
     let xmlDoc = jQuery.parseXML(xml);
     let $xml = $( xmlDoc );
     let $entries = $xml.find('item').each(function() {
-      let feed: Feed = new Feed('','','', new Date());
+      let feed: Feed = new Feed();
       feed.title = $(this).find('title').text();
       feed.text = $(this).find('description').text();
       feed.url = $(this).find('link').text();
       feed.date = new Date($(this).find('pubDate').text());
       feeds.push(feed);
     })
-    this.feedsSource.next(feeds);
+    this.feeds = this.feeds.concat(feeds);
+    this.feeds.sort((feeda, feedb) => feedb.date.valueOf() - feeda.date.valueOf())
+    this.feedsSource.next(this.feeds);
   }
 }

@@ -12,7 +12,7 @@ const core_1 = require('@angular/core');
 const http_1 = require('@angular/http');
 const feedsource_component_1 = require('./feedsource.component');
 const feedsource_form_component_1 = require('./feedsource-form.component');
-const feedsource_service_1 = require('./feedsource.service');
+const feedsource_service_1 = require('../services/feedsource.service');
 let App = class App {
     constructor(feedSourceService) {
         this.feedSourceService = feedSourceService;

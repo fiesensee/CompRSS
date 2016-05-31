@@ -1,10 +1,10 @@
 import {Http, Response, HTTP_PROVIDERS} from '@angular/http';
 import {Component, Injectable, Inject, Input, EventEmitter, forwardRef} from '@angular/core';
-import {FeedSource} from './feedsource';
-import {FeedSourceService} from './feedsource.service';
+import {FeedSource} from '../models/feedsource';
+import {FeedSourceService} from '../services/feedsource.service';
 import {NgClass} from '@angular/common';
-import {Feed} from './feed';
-import {FeedService} from './feed.service';
+import {Feed} from '../models/feed';
+import {FeedService} from '../services/feed.service';
 import {FeedComponent} from './feed.component';
 
 @Component({
@@ -26,12 +26,12 @@ export class FeedSourceComponent {
   }
 
   ngOnInit() {
-    this.feedService.getFeeds(this.feedSource);
+    // this.feedService.getFeeds(this.feedSource);
   }
 
   public changeExpand() {
     this.expanded = !this.expanded;
-    this.feedService.getFeeds(this.feedSource);
+    // this.feedService.getFeeds(this.feedSource);
   }
 
   public delete() {

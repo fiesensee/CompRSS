@@ -1,7 +1,7 @@
 import {Component, Injectable, EventEmitter} from '@angular/core';
 import {NgForm} from '@angular/common';
-import {FeedSource} from './feedsource'
-import {FeedSourceService} from './feedsource.service';
+import {FeedSource} from '../models/feedsource'
+import {FeedSourceService} from '../services/feedsource.service';
 
 @Component({
   selector: 'feedsource-form',
@@ -16,7 +16,7 @@ export class FeedSourceFormComponent {
   public created = new EventEmitter();
   private feedsource: FeedSource
   constructor(private feedSourceService: FeedSourceService) {
-    this.feedsource = new FeedSource('','')
+    this.feedsource = new FeedSource('','','')
   }
 
   switchActive() {
@@ -26,7 +26,7 @@ export class FeedSourceFormComponent {
   onSubmit() {
     this.feedSourceService.saveFeedSource(this.feedsource)
     this.created.emit('event');
-    this.feedsource = new FeedSource('', '')
+    this.feedsource = new FeedSource('', '','')
     this.switchActive();
   }
 }

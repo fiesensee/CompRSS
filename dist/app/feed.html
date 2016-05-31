@@ -1,10 +1,21 @@
-<div class="panel panel-info">
-    <button class="panel-heading" (click)="changeExpand()">
-      <h4 class="panel-title">
-        <a class="" href="{{feed.url}}">
-          {{feed.title}}<br /><small>{{feed.date}}</small>
-        </a>
-      </h4>
-    </button>
-    <div class="panel-body" *ngIf="expanded" [innerHTML]="feed.text"></div>
+<div class="row" style="border-bottom: 2px solid grey;">
+  <div class="col-md-8">
+    <h5>Title</h5>
+  </div>
+  <div class="col-md-4">
+    <h5>Date</h5>
+  </div>
+</div>
+<div class="row" *ngFor="let feed of feeds" style="border-top: 1px solid grey; padding: 8px;"
+(click)="feed.expanded = !feed.expanded">
+  <div class="col-md-8">
+    <a href="{{feed.url}}" target="_blank">{{feed.title}}</a>
+  </div>
+  <div class="col-md-4">
+    {{feed.date | date:'medium'}}
+  </div>
+  <div class="container-fluid" *ngIf="feed.expanded">
+    <div [innerHTML]="feed.text">
+    </div>
+  </div>
 </div>
