@@ -9,14 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const http_1 = require('@angular/http');
-const Subject_1 = require('rxjs/Subject');
 const core_1 = require('@angular/core');
 let UserService = class UserService {
     constructor(http) {
         this.http = http;
-        this.testToken = '';
-        this.tokenSource = new Subject_1.Subject();
-        this.token$ = this.tokenSource.asObservable();
+        this.token = 'undefined';
         this.username = 'felix';
         this.password = 'sinisterkid';
         this.client_id = 'FmpYthS5vsyLtrmgJB2N2ySJpTjKnL7debXPlSow';
@@ -36,7 +33,7 @@ let UserService = class UserService {
             .subscribe(res => this.setToken(res.json()));
     }
     setToken(token) {
-        this.tokenSource.next(token.access_token);
+        this.token = token.access_token;
     }
 };
 UserService = __decorate([

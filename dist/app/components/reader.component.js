@@ -10,43 +10,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require('@angular/core');
 const http_1 = require('@angular/http');
-const feedsource_1 = require('../models/feedsource');
+const feedsource_component_1 = require('./feedsource.component');
 const feed_component_1 = require('./feed.component');
+const label_component_1 = require('./label.component');
 const feedsource_service_1 = require('../services/feedsource.service');
 const feed_service_1 = require('../services/feed.service');
 const user_service_1 = require('../services/user.service');
+const label_service_1 = require('../services/label.service');
+const refresh_service_1 = require('../services/refresh.service');
 const common_1 = require('@angular/common');
 let ReaderComponent = class ReaderComponent {
-    constructor(feedSourceService, feedService, userService) {
-        this.feedSourceService = feedSourceService;
-        this.feedService = feedService;
-        this.userService = userService;
-        this.feeds = [];
-        this.feedSource = new feedsource_1.FeedSource('', '', '');
-        this.feedSourceService.feedSources$.subscribe(sources => { this.feedSources = sources; console.log(sources); });
-        this.feedService.feeds$.subscribe(feeds => this.feeds = feeds);
-    }
-    getFeeds(feedSources) {
-    }
-    deleteFeedSource(feedSource) {
-        this.feedSourceService.deleteFeedSource(feedSource);
-    }
-    saveFeedSource() {
-        this.feedSourceService.saveFeedSource(this.feedSource);
-        this.feedSource = new feedsource_1.FeedSource('', '', '');
+    constructor(refreshService) {
+        this.refreshService = refreshService;
     }
     ngOnInit() {
-        this.feedSourceService.startTimer();
+        this.refreshService.startTimer();
     }
 };
 ReaderComponent = __decorate([
     core_1.Component({
         selector: 'app',
         templateUrl: './app/reader.html',
-        providers: [feedsource_service_1.FeedSourceService, feed_service_1.FeedService, user_service_1.UserService, http_1.HTTP_PROVIDERS],
-        directives: [feed_component_1.FeedComponent, common_1.NgClass]
+        providers: [feedsource_service_1.FeedSourceService, feed_service_1.FeedService, label_service_1.LabelService,
+            user_service_1.UserService, refresh_service_1.RefreshService, http_1.HTTP_PROVIDERS],
+        directives: [feed_component_1.FeedComponent, feedsource_component_1.FeedSourceComponent, label_component_1.LabelComponent, common_1.NgClass]
     }),
     core_1.Injectable(), 
-    __metadata('design:paramtypes', [feedsource_service_1.FeedSourceService, feed_service_1.FeedService, user_service_1.UserService])
+    __metadata('design:paramtypes', [refresh_service_1.RefreshService])
 ], ReaderComponent);
 exports.ReaderComponent = ReaderComponent;

@@ -12,13 +12,17 @@ export class FeedService{
   private feedsSource = new Subject<Feed[]>();
   public feeds$ = this.feedsSource.asObservable();
   public feeds: Feed[] = [];
-    constructor(private http: Http, private feedSourceService: FeedSourceService){
-    this.feedSourceService.feedSources$.subscribe(feedSources => this.getFeeds(feedSources));
+    constructor(private http: Http){
   }
   getFeeds(feedSources: FeedSource[]){
     this.feeds = []
-    for (let feedSource of feedSources){
-      this.http.get('http://localhost:8000/proxy/' + feedSource.sourceUrl).subscribe(res => this.parseRSS(res.text()));
+    if (feedSources.length == 0){
+      this.feedsSource.next([]);
+    }
+    else {
+      for (let feedSource of feedSources){
+        this.http.get('http://localhost:8000/proxy/' + feedSource.sourceUrl).subscribe(res => this.parseRSS(res.text()));
+      }
     }
   }
 
