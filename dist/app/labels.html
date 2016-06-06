@@ -7,7 +7,7 @@
   </button>
 </div>
 <div *ngIf="labelForm">
-  <form class="inline-form" (ngSubmit)="saveLabel(); labelForm = !labelForm" #LabelForm="ngForm">
+  <form class="inline-form" (ngSubmit)="saveNewLabel(); labelForm = !labelForm" #LabelForm="ngForm">
     <div class="well" style="z-index: 2; position: absolute;">
       <h1>Categorie Form</h1>
       <div class="form-group">
@@ -27,7 +27,8 @@
 <div *ngIf="labelsExpanded" class="container">
   <div *ngFor="let label of labels" class="row">
     <div class="btn-group col-md-12">
-      <button class="btn btn-default">
+      <button class="btn" (click)="changeActive(label)"
+      [ngClass]="{'btn-default': !label.active, 'btn-info': label.active}">
         {{label.name}}
       </button>
       <button class="btn btn-danger" (click)="deleteLabel(label)">
@@ -37,6 +38,6 @@
   </div>
 </div>
 <div style="padding-bottom: 8px">
-  <feedsources [feedSources]="activeLabel.feedSources" (changed)="refresh()"
-  (emitSources)=setActiveSources($event)></feedsources>
+  <feedsources [feedSources]="feedSources"
+  (emitActiveChange)=setActiveSources($event)></feedsources>
 </div>

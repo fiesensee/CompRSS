@@ -36,7 +36,7 @@ let FeedSourceService = class FeedSourceService {
         let token = this.userService.token;
         headers.append('Authorization', 'Bearer ' + token.toString());
         this.http.get('http://localhost:8000/feedsources/', { headers: headers })
-            .subscribe(sources => this.feedSourcesSource.next(sources.json().results));
+            .subscribe(sources => this.feedSourcesSource.next(sources.json()));
     }
     deleteFeedSource(targetSource) {
         let headers = new http_1.Headers();

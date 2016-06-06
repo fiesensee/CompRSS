@@ -17,15 +17,9 @@ export class LabelService {
     let token = this.userService.token;
     headers.append('Authorization', 'Bearer '+ token.toString());
     headers.append('Content-Type', 'application/json');
-    let body = [
-      {name: label.name, feedSources: []}
-    ]
-    for (let source of label.feedSources) {
-      body[0].feedSources.push(source)
-    }
-    console.log(JSON.parse(JSON.stringify(body)))
-    this.http.post('http://localhost:8000/labels/', JSON.parse(JSON.stringify(body)),{headers: headers})
-      .subscribe(res => {this.getLabels(); console.log('saved')});
+    let body = {name: label.name}
+    this.http.post('http://localhost:8000/labels/', JSON.stringify(body),{headers: headers})
+      .subscribe(res => {this.getLabels(); this.updateLabel(label); console.log('saved')});
   }
 
   updateLabel(label: Label) {
@@ -34,13 +28,13 @@ export class LabelService {
     headers.append('Authorization', 'Bearer '+ token.toString());
     headers.append('Content-Type', 'application/json');
     let body = [
-      {name: label.name, feedSources: []}
+      {labelId: label.id, feedSourceIds: []}
     ]
     for (let source of label.feedSources) {
-      body[0].feedSources.push(source)
+      body[0].feedSourceIds.push(source.id)
     }
-    console.log(JSON.parse(JSON.stringify(body)))
-    this.http.put(label.url, JSON.parse(JSON.stringify(body)),{headers: headers})
+    console.log(JSON.stringify(body))
+    this.http.post('http://localhost:8000/updatefeedsourcelabels/', JSON.stringify(body),{headers: headers})
       .subscribe(res => {this.getLabels(); console.log('saved')});
   }
 
@@ -57,7 +51,23 @@ export class LabelService {
     let token = this.userService.token
     headers.append('Authorization', 'Bearer '+ token.toString());
     this.http.get('http://localhost:8000/labels/',{headers: headers})
-      .subscribe(labels => this.labelSource.next(labels.json().results));
+      .subscribe(labels => this.labelSource.next(labels.json()));
+      // .subscribe(labels => console.log(labels.json().results));
   }
 
+  // setLabelJoins(labels: Label[]) {
+  //   let headers = new Headers();
+  //   let token = this.userService.token
+  //   headers.append('Authorization', 'Bearer '+ token.toString());
+  //   this.http.get('http://localhost:8000/feedsourcelabels/', {headers: headers})
+  //     .subscribe(joinsRaw => {
+  //       let joins = joinsRaw.json().results;
+  //       for (let join of joins) {
+  //         let labelurl = join.label.url;
+  //         let index = labels.findIndex(label => label.url === labelurl);
+  //         labels[index].feedSources.push(join.feedsource);
+  //       };
+  //     });
+  //   this.labelSource.next(labels);
+  // }
 }

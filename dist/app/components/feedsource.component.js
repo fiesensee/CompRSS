@@ -13,28 +13,30 @@ const feedsource_1 = require('../models/feedsource');
 const feedsource_service_1 = require('../services/feedsource.service');
 const common_1 = require('@angular/common');
 const feed_component_1 = require('./feed.component');
+const refresh_service_1 = require('../services/refresh.service');
 let FeedSourceComponent = class FeedSourceComponent {
-    constructor(feedSourceService) {
+    constructor(feedSourceService, refreshService) {
         this.feedSourceService = feedSourceService;
-        this.newFeedSource = new feedsource_1.FeedSource('', '', '', false);
-        this.changed = new core_1.EventEmitter();
+        this.refreshService = refreshService;
+        this.newFeedSource = new feedsource_1.FeedSource('', '', '', 0);
         this.emitSources = new core_1.EventEmitter();
+        this.emitActiveChange = new core_1.EventEmitter();
     }
     deleteFeedSource(feedSource) {
         this.feedSourceService.deleteFeedSource(feedSource);
-        this.changed.emit('event');
+        if (feedSource.active) {
+            this.changeActive(feedSource);
+        }
+        this.refreshService.refresh_all();
     }
     saveFeedSource() {
         this.feedSourceService.saveFeedSource(this.newFeedSource);
-        this.newFeedSource = new feedsource_1.FeedSource('', '', '', false);
-        this.changed.emit('event');
+        this.newFeedSource = new feedsource_1.FeedSource('', '', '', 0);
+        this.refreshService.refresh_all();
     }
     changeActive(feedSource) {
-        let index = this.feedSources.indexOf(feedSource);
-        let targetSource = this.feedSources[index];
-        targetSource.active = !targetSource.active;
-        this.feedSources[index] = targetSource;
-        this.emitSources.emit({ value: this.feedSources });
+        feedSource.active = !feedSource.active;
+        this.emitActiveChange.emit({ value: feedSource });
     }
 };
 FeedSourceComponent = __decorate([
@@ -43,9 +45,9 @@ FeedSourceComponent = __decorate([
         templateUrl: './app/feedsources.html',
         directives: [common_1.NgClass, feed_component_1.FeedComponent],
         inputs: ['feedSources'],
-        outputs: ['changed', 'emitSources']
+        outputs: ['emitSources', 'emitActiveChange']
     }),
     core_1.Injectable(), 
-    __metadata('design:paramtypes', [feedsource_service_1.FeedSourceService])
+    __metadata('design:paramtypes', [feedsource_service_1.FeedSourceService, refresh_service_1.RefreshService])
 ], FeedSourceComponent);
 exports.FeedSourceComponent = FeedSourceComponent;

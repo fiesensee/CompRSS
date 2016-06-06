@@ -33,7 +33,8 @@ export class FeedSourceService {
     let token = this.userService.token;
     headers.append('Authorization', 'Bearer '+ token.toString());
     this.http.get('http://localhost:8000/feedsources/', {headers: headers})
-      .subscribe(sources => this.feedSourcesSource.next(sources.json().results));
+      .subscribe(sources => this.feedSourcesSource.next(sources.json()));
+      // .subscribe(sources => console.log(sources.json()))
   }
 
 

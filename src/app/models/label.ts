@@ -4,6 +4,7 @@ export class Label {
     public name: string,
     public feedSources: FeedSource[],
     public url: string,
+    public id: number,
     public active
   ){}
 }

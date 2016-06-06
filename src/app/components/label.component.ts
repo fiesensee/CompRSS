@@ -1,4 +1,3 @@
-import {Http} from '@angular/http';
 import {Component, Injectable, Input, EventEmitter} from '@angular/core';
 import {NgClass} from '@angular/common';
 import {LabelService} from '../services/label.service';
@@ -17,64 +16,123 @@ import {RefreshService} from '../services/refresh.service';
 })
 @Injectable()
 export class LabelComponent {
-  public defaultLabel = new Label('Default', [], '', true);
-  public activeLabel = this.defaultLabel;
+  public feedSources: FeedSource[] = [];
   public labels: Label[];
-  public newLabel: Label = new Label('',[], '', false);
-  public activeSources: FeedSource[]
+  public newLabel: Label = new Label('',[], '', 0, false);
   constructor(
     private labelService: LabelService,
     private refreshService: RefreshService,
     private feedSourceService: FeedSourceService
   ) {
-    this.labelService.labels$.subscribe(labels => this.labels = labels);
-    this.feedSourceService.feedSources$.subscribe(sources => {
-      this.defaultLabel.feedSources = sources;
-      this.refreshActiveLabel();
-    });
+      this.labelService.labels$.subscribe(labels => {
+        this.labels = labels;
+        this.setLabels(labels);
+        this.refreshFeedSources();
+      });
+      this.feedSourceService.feedSources$.subscribe(sources => {
+        this.feedSources = sources;
+      });
   }
 
-  refreshActiveLabel() {
-    let tmpLabel = this.defaultLabel
-    for(let source of this.activeLabel.feedSources){
-      if(source.active){
-        let index = tmpLabel.feedSources.indexOf(source);
-        tmpLabel.feedSources[index].active = true;
-      }
-    }
-    this.activeLabel = tmpLabel;
-    this.refreshFeeds();
+  setFeedSources(sources: FeedSource[]) {
+    let activeSources = this.getActiveSources();
+    activeSources.forEach(source => source.active = false);
+    sources.forEach(source => {
+      activeSources.forEach(activeSource => {
+        if (source === activeSource) {
+          source.active = true;
+        }
+      });
+    });
+    this.feedSources = sources;
+  }
+
+  setLabels(labels) {
+    let activeLabels = this.labels.filter(label => label.active);
+    if (activeLabels.length === 0) {
+      this.labels = labels;
+    };
+    activeLabels.forEach(label => label.active = false);
+    labels.forEach(label => {
+      activeLabels.forEach(activeLabel => {
+        if (label === activeLabel) {
+          label.active = true;
+        }
+      });
+    });
+    this.labels = labels;
+  }
+
+  refreshFeedSources() {
+    let activeSources = this.getActiveSources();
+    this.feedSources.forEach(source => {
+      source.active = false;
+      activeSources.forEach(activeSource => {
+        if (source.url === activeSource.url) {
+          source.active = true;
+        }
+      });
+    });
   }
 
   deleteLabel(label: Label){
     this.labelService.deleteLabel(label);
-    this.activeLabel = this.defaultLabel;
+
+    // this.activeLabel = this.defaultLabel;
   }
 
   saveNewLabel(){
-    this.newLabel.feedSources = this.activeLabel.feedSources;
+    this.newLabel.feedSources = this.getActiveSources();
     this.labelService.saveLabel(this.newLabel);
-    this.newLabel = new Label('', [], '', false);
-  }
-
-  updateActiveLabel() {
-    this.labelService.updateLabel(this.activeLabel)
+    this.newLabel = new Label('', [], '', 0, false);
   }
 
   setActiveSources(args) {
-    this.activeLabel.feedSources = args.value;
+    let feedSource = args.value;
+    let activeLabels = this.labels.filter(label => label.active);
+    activeLabels.forEach(label => {
+      let index = label.feedSources.findIndex(source => source.url === feedSource.url);
+      if (feedSource.active) {
+        if (index === -1) {
+          // label.feedSources.splice(index,1);
+          label.feedSources.push(feedSource);
+        }
+      }
+      else {
+        if (index > -1) {
+          label.feedSources.splice(index,1);
+        }
+      }
+      this.labelService.updateLabel(label);
+    });
+    this.refreshFeedSources();
     this.refreshFeeds();
-    this.updateActiveLabel();
   }
 
   refreshFeeds() {
-    this.activeSources = [];
-    for(let source of this.activeLabel.feedSources){
-      if(source.active){
-        this.activeSources.push(source);
-      }
+    this.refreshService.setAndRefreshFeedSources(this.getActiveSources());
+  }
+
+  getActiveSources(): FeedSource[] {
+    let activeLabels = this.labels.filter(label => label.active);
+    if (activeLabels.length === 0) {
+      return [];
     }
-    this.refreshService.setAndRefreshFeedSources(this.activeSources);
+    let activeSources = [];
+    activeLabels.forEach(activeLabel => {
+      activeLabel.feedSources.forEach(activeSource => {
+        if (activeSources.findIndex(source => source === activeSource) === -1) {
+          activeSources.push(activeSource);
+        }
+      });
+    });
+    return activeSources;
+  }
+
+  changeActive(targetLabel: Label) {
+    targetLabel.active = !targetLabel.active
+    this.refreshFeedSources();
+    this.refreshFeeds();
   }
 
 }

@@ -24,15 +24,9 @@ let LabelService = class LabelService {
         let token = this.userService.token;
         headers.append('Authorization', 'Bearer ' + token.toString());
         headers.append('Content-Type', 'application/json');
-        let body = [
-            { name: label.name, feedSources: [] }
-        ];
-        for (let source of label.feedSources) {
-            body[0].feedSources.push(source);
-        }
-        console.log(JSON.parse(JSON.stringify(body)));
-        this.http.post('http://localhost:8000/labels/', JSON.parse(JSON.stringify(body)), { headers: headers })
-            .subscribe(res => { this.getLabels(); console.log('saved'); });
+        let body = { name: label.name };
+        this.http.post('http://localhost:8000/labels/', JSON.stringify(body), { headers: headers })
+            .subscribe(res => { this.getLabels(); this.updateLabel(label); console.log('saved'); });
     }
     updateLabel(label) {
         let headers = new http_1.Headers();
@@ -40,13 +34,13 @@ let LabelService = class LabelService {
         headers.append('Authorization', 'Bearer ' + token.toString());
         headers.append('Content-Type', 'application/json');
         let body = [
-            { name: label.name, feedSources: [] }
+            { labelId: label.id, feedSourceIds: [] }
         ];
         for (let source of label.feedSources) {
-            body[0].feedSources.push(source);
+            body[0].feedSourceIds.push(source.id);
         }
-        console.log(JSON.parse(JSON.stringify(body)));
-        this.http.put(label.url, JSON.parse(JSON.stringify(body)), { headers: headers })
+        console.log(JSON.stringify(body));
+        this.http.post('http://localhost:8000/updatefeedsourcelabels/', JSON.stringify(body), { headers: headers })
             .subscribe(res => { this.getLabels(); console.log('saved'); });
     }
     deleteLabel(label) {
@@ -61,7 +55,7 @@ let LabelService = class LabelService {
         let token = this.userService.token;
         headers.append('Authorization', 'Bearer ' + token.toString());
         this.http.get('http://localhost:8000/labels/', { headers: headers })
-            .subscribe(labels => this.labelSource.next(labels.json().results));
+            .subscribe(labels => this.labelSource.next(labels.json()));
     }
 };
 LabelService = __decorate([
