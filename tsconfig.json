@@ -35,6 +35,7 @@
     "src/app/services/feed.service.ts",
     "src/app/services/feedsource.service.ts",
     "src/app/services/label.service.ts",
+    "src/app/services/refresh.service.ts",
     "src/app/services/user.service.ts",
     "src/main.ts"
   ]

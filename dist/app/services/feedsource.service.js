@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require('@angular/core');
 const Subject_1 = require('rxjs/Subject');
-const Rx_1 = require('rxjs/Rx');
 const http_1 = require('@angular/http');
 const user_service_1 = require('./user.service');
 let FeedSourceService = class FeedSourceService {
@@ -19,20 +18,11 @@ let FeedSourceService = class FeedSourceService {
         this.userService = userService;
         this.feedSourcesSource = new Subject_1.Subject();
         this.feedSources$ = this.feedSourcesSource.asObservable();
-        this.userService.token$.subscribe(token => this.token = token);
-        this.userService.getToken();
-    }
-    startTimer() {
-        let timer = Rx_1.Observable.timer(1000, 1000 * 60 * 5);
-        timer.subscribe(t => this.refresh());
-    }
-    refresh() {
-        this.userService.getToken();
-        this.getFeedSources();
     }
     saveFeedSource(feedSource) {
         let headers = new http_1.Headers();
-        headers.append('Authorization', 'Bearer ' + this.token.toString());
+        let token = this.userService.token;
+        headers.append('Authorization', 'Bearer ' + token.toString());
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         let body = [
             'name=' + feedSource.name,
@@ -42,15 +32,16 @@ let FeedSourceService = class FeedSourceService {
             .subscribe(res => { this.getFeedSources(); console.log('saved'); });
     }
     getFeedSources() {
-        console.log('test');
         let headers = new http_1.Headers();
-        headers.append('Authorization', 'Bearer ' + this.token.toString());
+        let token = this.userService.token;
+        headers.append('Authorization', 'Bearer ' + token.toString());
         this.http.get('http://localhost:8000/feedsources/', { headers: headers })
-            .subscribe(sources => { this.feedSourcesSource.next(sources.json().results); console.log(sources.json().results); });
+            .subscribe(sources => this.feedSourcesSource.next(sources.json()));
     }
     deleteFeedSource(targetSource) {
         let headers = new http_1.Headers();
-        headers.append('Authorization', 'Bearer ' + this.token.toString());
+        let token = this.userService.token;
+        headers.append('Authorization', 'Bearer ' + token.toString());
         this.http.delete(targetSource.url, { headers: headers })
             .subscribe(res => this.getFeedSources());
     }

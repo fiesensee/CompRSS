@@ -9,18 +9,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const http_1 = require('@angular/http');
-const Subject_1 = require('rxjs/Subject');
 const core_1 = require('@angular/core');
 let UserService = class UserService {
     constructor(http) {
         this.http = http;
-        this.testToken = '';
-        this.tokenSource = new Subject_1.Subject();
-        this.token$ = this.tokenSource.asObservable();
+        this.token = 'undefined';
         this.username = 'felix';
         this.password = 'sinisterkid';
-        this.client_id = 'FmpYthS5vsyLtrmgJB2N2ySJpTjKnL7debXPlSow';
-        this.client_secret = 'pTpeLGCIvd3Lki1NFiUgLhWFfYpasJXBi2vGVv3OUTNv6xGLSjR3Lpb00Pj4KCdiXyzedZr37otfzqiCIuhWTwmHGB0JFGNlMqLyY6BbZq4UN1q0dA9ZKKgWqsLuTcCB';
+        this.client_id = 'QuYtbEXqZnu3CkJOoRslncI5y1t4O2woFfWs4lsf';
+        this.client_secret = 'Y6zJ3KY420bmITiq6ZOmGa4axSnEliUYSQFaa1IIK6tAtM4JxRhl9wcBTZSix9fK10qrckHFH7ztimCOm2TwVhF6ItwYBXaaRnsk4bdAM13zEouopPHkERM4Kegy5b5w';
     }
     getToken() {
         let body = [
@@ -36,7 +33,7 @@ let UserService = class UserService {
             .subscribe(res => this.setToken(res.json()));
     }
     setToken(token) {
-        this.tokenSource.next(token.access_token);
+        this.token = token.access_token;
     }
 };
 UserService = __decorate([

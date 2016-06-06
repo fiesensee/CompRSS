@@ -4,13 +4,11 @@ import {Injectable} from '@angular/core';
 
 @Injectable()
 export class UserService {
-  testToken = '';
-  tokenSource = new Subject<string>();
-  token$ = this.tokenSource.asObservable();
-  username: string = 'felix';
-  password: string = 'sinisterkid';
-  client_id: string = 'FmpYthS5vsyLtrmgJB2N2ySJpTjKnL7debXPlSow';
-  client_secret: string = 'pTpeLGCIvd3Lki1NFiUgLhWFfYpasJXBi2vGVv3OUTNv6xGLSjR3Lpb00Pj4KCdiXyzedZr37otfzqiCIuhWTwmHGB0JFGNlMqLyY6BbZq4UN1q0dA9ZKKgWqsLuTcCB';
+  public token = 'undefined';
+  private username: string = 'felix';
+  private password: string = 'sinisterkid';
+  private client_id: string = 'QuYtbEXqZnu3CkJOoRslncI5y1t4O2woFfWs4lsf';
+  private client_secret: string = 'Y6zJ3KY420bmITiq6ZOmGa4axSnEliUYSQFaa1IIK6tAtM4JxRhl9wcBTZSix9fK10qrckHFH7ztimCOm2TwVhF6ItwYBXaaRnsk4bdAM13zEouopPHkERM4Kegy5b5w';
   constructor(private http: Http) {}
 
   getToken(){
@@ -28,8 +26,7 @@ export class UserService {
   }
 
 
-  setToken(token){
-    // console.log(token.access_token)
-    this.tokenSource.next(token.access_token);
+  private setToken(token){
+    this.token = token.access_token;
   }
 }

@@ -16,7 +16,6 @@ export class FeedSourceFormComponent {
   public created = new EventEmitter();
   private feedsource: FeedSource
   constructor(private feedSourceService: FeedSourceService) {
-    this.feedsource = new FeedSource('','','')
   }
 
   switchActive() {
@@ -26,7 +25,7 @@ export class FeedSourceFormComponent {
   onSubmit() {
     this.feedSourceService.saveFeedSource(this.feedsource)
     this.created.emit('event');
-    this.feedsource = new FeedSource('', '','')
+
     this.switchActive();
   }
 }

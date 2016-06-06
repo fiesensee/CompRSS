@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require('@angular/core');
 const feed_service_1 = require('../services/feed.service');
-const label_service_1 = require('../services/label.service');
 let FeedComponent = class FeedComponent {
     constructor(feedService) {
         this.feedService = feedService;
@@ -20,8 +19,7 @@ let FeedComponent = class FeedComponent {
 FeedComponent = __decorate([
     core_1.Component({
         selector: 'feeds',
-        templateUrl: './app/feed.html',
-        providers: [feed_service_1.FeedService, label_service_1.LabelService]
+        templateUrl: './app/feed.html'
     }),
     core_1.Injectable(), 
     __metadata('design:paramtypes', [feed_service_1.FeedService])

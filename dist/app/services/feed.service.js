@@ -10,23 +10,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require('@angular/core');
 const feed_1 = require('../models/feed');
-const feedsource_service_1 = require('./feedsource.service');
 const http_1 = require('@angular/http');
 const jQuery = require('jquery');
 const Subject_1 = require('rxjs/Subject');
 let FeedService = class FeedService {
-    constructor(http, feedSourceService) {
+    constructor(http) {
         this.http = http;
-        this.feedSourceService = feedSourceService;
         this.feedsSource = new Subject_1.Subject();
         this.feeds$ = this.feedsSource.asObservable();
         this.feeds = [];
-        this.feedSourceService.feedSources$.subscribe(feedSources => this.getFeeds(feedSources));
     }
     getFeeds(feedSources) {
         this.feeds = [];
-        for (let feedSource of feedSources) {
-            this.http.get('http://localhost:8000/proxy/' + feedSource.sourceUrl).subscribe(res => this.parseRSS(res.text()));
+        if (feedSources.length == 0) {
+            this.feedsSource.next([]);
+        }
+        else {
+            for (let feedSource of feedSources) {
+                this.http.get('http://localhost:8000/proxy/' + feedSource.sourceUrl).subscribe(res => this.parseRSS(res.text()));
+            }
         }
     }
     parseRSS(xml) {
@@ -48,6 +50,6 @@ let FeedService = class FeedService {
 };
 FeedService = __decorate([
     core_1.Injectable(), 
-    __metadata('design:paramtypes', [http_1.Http, feedsource_service_1.FeedSourceService])
+    __metadata('design:paramtypes', [http_1.Http])
 ], FeedService);
 exports.FeedService = FeedService;

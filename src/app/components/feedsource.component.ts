@@ -1,42 +1,46 @@
-import {Http, Response, HTTP_PROVIDERS} from '@angular/http';
-import {Component, Injectable, Inject, Input, EventEmitter, forwardRef} from '@angular/core';
+import {Http} from '@angular/http';
+import {Component, Injectable, Input, EventEmitter} from '@angular/core';
 import {FeedSource} from '../models/feedsource';
 import {FeedSourceService} from '../services/feedsource.service';
 import {NgClass} from '@angular/common';
-import {Feed} from '../models/feed';
-import {FeedService} from '../services/feed.service';
 import {FeedComponent} from './feed.component';
+import {RefreshService} from '../services/refresh.service';
 
 @Component({
-  selector: 'feedsource',
+  selector: 'feedsources',
   templateUrl: './app/feedsources.html',
-  providers: [HTTP_PROVIDERS, FeedService, FeedSourceService],
   directives: [NgClass, FeedComponent],
-  inputs: ['feedSource'],
-  outputs: ['deleted']
+  inputs: ['feedSources'],
+  outputs: ['emitSources', 'emitActiveChange']
 })
 @Injectable()
 export class FeedSourceComponent {
-  public expanded: boolean = false;
-  public feeds: Feed[];
-  public feedSource: FeedSource;
-  public deleted = new EventEmitter();
-  constructor(private feedService: FeedService, private feedSourceService: FeedSourceService) {
-    this.feedService.feeds$.subscribe(feeds => this.feeds = feeds);
+  public feedSources: FeedSource[];
+  public newFeedSource: FeedSource = new FeedSource('','','', 0);
+  public emitSources = new EventEmitter();
+  public emitActiveChange = new EventEmitter();
+
+  constructor(private feedSourceService: FeedSourceService, private refreshService: RefreshService) {
   }
 
-  ngOnInit() {
-    // this.feedService.getFeeds(this.feedSource);
+  deleteFeedSource(feedSource: FeedSource){
+    this.feedSourceService.deleteFeedSource(feedSource);
+    if (feedSource.active){
+      this.changeActive(feedSource)
+    }
+    this.refreshService.refresh_all()
   }
 
-  public changeExpand() {
-    this.expanded = !this.expanded;
-    // this.feedService.getFeeds(this.feedSource);
+  saveFeedSource(){
+    this.feedSourceService.saveFeedSource(this.newFeedSource);
+    this.newFeedSource = new FeedSource('', '', '', 0);
+    this.refreshService.refresh_all()
   }
 
-  public delete() {
-    this.feedSourceService.deleteFeedSource(this.feedSource);
-    this.deleted.emit('event');
+  changeActive(feedSource: FeedSource) {
+    feedSource.active = !feedSource.active;
+    this.emitActiveChange.emit({value: feedSource});
   }
+
 
 }
