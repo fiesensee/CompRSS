@@ -9,15 +9,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const http_1 = require('@angular/http');
+const Subject_1 = require('rxjs/Subject');
 const core_1 = require('@angular/core');
 let UserService = class UserService {
     constructor(http) {
         this.http = http;
         this.token = 'undefined';
+        this.tokenSource = new Subject_1.Subject();
+        this.token$ = this.tokenSource.asObservable();
         this.username = 'felix';
-        this.password = 'sinisterkid';
-        this.client_id = 'QuYtbEXqZnu3CkJOoRslncI5y1t4O2woFfWs4lsf';
-        this.client_secret = 'Y6zJ3KY420bmITiq6ZOmGa4axSnEliUYSQFaa1IIK6tAtM4JxRhl9wcBTZSix9fK10qrckHFH7ztimCOm2TwVhF6ItwYBXaaRnsk4bdAM13zEouopPHkERM4Kegy5b5w';
+        this.password = 'sinisterkid10';
+        this.client_id = 'nNRd7e60nzUNlzlpM0wgw3Bvq0ck9TkNN43was44';
+        this.client_secret = 'qqIIPLKgdzez8nCYUXkM9847GijrQmFzHQMinJ80KINMukHwQhhG8QzhPWmttTAwuEZ58V0qpWSoSVaOXMQyPsM74Xk4MlruqyAtGbmsQtmsMmNFatlJHuWiRuqZdjNI';
     }
     getToken() {
         let body = [
@@ -29,10 +32,11 @@ let UserService = class UserService {
         ];
         let headers = new http_1.Headers();
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        this.http.post('http://localhost:8000/o/token/', body.join('&'), { headers: headers })
+        this.http.post('https://comprest.herokuapp.com/o/token/', body.join('&'), { headers: headers })
             .subscribe(res => this.setToken(res.json()));
     }
     setToken(token) {
+        this.tokenSource.next(token.access_token);
         this.token = token.access_token;
     }
 };

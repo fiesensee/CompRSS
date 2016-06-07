@@ -12,6 +12,7 @@ const core_1 = require('@angular/core');
 const Subject_1 = require('rxjs/Subject');
 const http_1 = require('@angular/http');
 const user_service_1 = require('./user.service');
+const http_service_1 = require('./http.service');
 let FeedSourceService = class FeedSourceService {
     constructor(http, userService) {
         this.http = http;
@@ -20,34 +21,27 @@ let FeedSourceService = class FeedSourceService {
         this.feedSources$ = this.feedSourcesSource.asObservable();
     }
     saveFeedSource(feedSource) {
-        let headers = new http_1.Headers();
-        let token = this.userService.token;
-        headers.append('Authorization', 'Bearer ' + token.toString());
-        headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        let body = [
-            'name=' + feedSource.name,
-            'sourceUrl=' + feedSource.sourceUrl
-        ];
-        this.http.post('http://localhost:8000/feedsources/', body.join('&'), { headers: headers })
+        let body = {
+            "name": feedSource.name,
+            "sourceUrl": feedSource.sourceUrl
+        };
+        this.http.post('feedsources/', JSON.stringify(body))
             .subscribe(res => { this.getFeedSources(); console.log('saved'); });
     }
     getFeedSources() {
         let headers = new http_1.Headers();
         let token = this.userService.token;
         headers.append('Authorization', 'Bearer ' + token.toString());
-        this.http.get('http://localhost:8000/feedsources/', { headers: headers })
+        this.http.get('feedsources/')
             .subscribe(sources => this.feedSourcesSource.next(sources.json()));
     }
     deleteFeedSource(targetSource) {
-        let headers = new http_1.Headers();
-        let token = this.userService.token;
-        headers.append('Authorization', 'Bearer ' + token.toString());
-        this.http.delete(targetSource.url, { headers: headers })
+        this.http.delete(targetSource.url)
             .subscribe(res => this.getFeedSources());
     }
 };
 FeedSourceService = __decorate([
     core_1.Injectable(), 
-    __metadata('design:paramtypes', [http_1.Http, user_service_1.UserService])
+    __metadata('design:paramtypes', [http_service_1.HttpService, user_service_1.UserService])
 ], FeedSourceService);
 exports.FeedSourceService = FeedSourceService;

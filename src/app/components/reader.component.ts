@@ -14,12 +14,13 @@ import {Feed} from '../models/feed';
 import {Label} from '../models/label';
 import {NgClass} from '@angular/common';
 import {Observable} from 'rxjs/Rx';
+import {HttpService} from '../services/http.service';
 
 @Component({
   selector: 'app',
   templateUrl: './app/reader.html',
   providers: [FeedSourceService, FeedService, LabelService,
-     UserService, RefreshService, HTTP_PROVIDERS],
+     UserService, RefreshService, HttpService, HTTP_PROVIDERS],
   directives: [FeedComponent, FeedSourceComponent, LabelComponent, NgClass]
 })
 
