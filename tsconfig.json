@@ -34,6 +34,7 @@
     "src/app/models/label.ts",
     "src/app/services/feed.service.ts",
     "src/app/services/feedsource.service.ts",
+    "src/app/services/http.service.ts",
     "src/app/services/label.service.ts",
     "src/app/services/refresh.service.ts",
     "src/app/services/user.service.ts",

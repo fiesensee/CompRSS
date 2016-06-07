@@ -5,10 +5,12 @@ import {Injectable} from '@angular/core';
 @Injectable()
 export class UserService {
   public token = 'undefined';
+  public tokenSource = new Subject<string>();
+  public token$ = this.tokenSource.asObservable();
   private username: string = 'felix';
-  private password: string = 'sinisterkid';
-  private client_id: string = 'QuYtbEXqZnu3CkJOoRslncI5y1t4O2woFfWs4lsf';
-  private client_secret: string = 'Y6zJ3KY420bmITiq6ZOmGa4axSnEliUYSQFaa1IIK6tAtM4JxRhl9wcBTZSix9fK10qrckHFH7ztimCOm2TwVhF6ItwYBXaaRnsk4bdAM13zEouopPHkERM4Kegy5b5w';
+  private password: string = 'sinisterkid10';
+  private client_id: string = 'nNRd7e60nzUNlzlpM0wgw3Bvq0ck9TkNN43was44';
+  private client_secret: string = 'qqIIPLKgdzez8nCYUXkM9847GijrQmFzHQMinJ80KINMukHwQhhG8QzhPWmttTAwuEZ58V0qpWSoSVaOXMQyPsM74Xk4MlruqyAtGbmsQtmsMmNFatlJHuWiRuqZdjNI';
   constructor(private http: Http) {}
 
   getToken(){
@@ -21,12 +23,13 @@ export class UserService {
     ]
     let headers = new Headers()
     headers.append('Content-Type', 'application/x-www-form-urlencoded')
-    this.http.post('http://localhost:8000/o/token/', body.join('&'), {headers: headers})
+    this.http.post('https://comprest.herokuapp.com/o/token/', body.join('&'), {headers: headers})
       .subscribe(res => this.setToken(res.json()))
   }
 
 
   private setToken(token){
+    this.tokenSource.next(token.access_token);
     this.token = token.access_token;
   }
 }

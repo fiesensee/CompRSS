@@ -10,8 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require('@angular/core');
 const Subject_1 = require('rxjs/Subject');
-const http_1 = require('@angular/http');
 const user_service_1 = require('./user.service');
+const http_service_1 = require('./http.service');
 let LabelService = class LabelService {
     constructor(http, userService) {
         this.http = http;
@@ -20,19 +20,11 @@ let LabelService = class LabelService {
         this.labels$ = this.labelSource.asObservable();
     }
     saveLabel(label) {
-        let headers = new http_1.Headers();
-        let token = this.userService.token;
-        headers.append('Authorization', 'Bearer ' + token.toString());
-        headers.append('Content-Type', 'application/json');
         let body = { name: label.name };
-        this.http.post('http://localhost:8000/labels/', JSON.stringify(body), { headers: headers })
+        this.http.post('labels/', JSON.stringify(body))
             .subscribe(res => { this.getLabels(); this.updateLabel(label); console.log('saved'); });
     }
     updateLabel(label) {
-        let headers = new http_1.Headers();
-        let token = this.userService.token;
-        headers.append('Authorization', 'Bearer ' + token.toString());
-        headers.append('Content-Type', 'application/json');
         let body = [
             { labelId: label.id, feedSourceIds: [] }
         ];
@@ -40,26 +32,20 @@ let LabelService = class LabelService {
             body[0].feedSourceIds.push(source.id);
         }
         console.log(JSON.stringify(body));
-        this.http.post('http://localhost:8000/updatefeedsourcelabels/', JSON.stringify(body), { headers: headers })
+        this.http.post('updatefeedsourcelabels/', JSON.stringify(body))
             .subscribe(res => { this.getLabels(); console.log('saved'); });
     }
     deleteLabel(label) {
-        let headers = new http_1.Headers();
-        let token = this.userService.token;
-        headers.append('Authorization', 'Bearer ' + token.toString());
-        this.http.delete(label.url, { headers: headers })
+        this.http.delete(label.url)
             .subscribe(res => this.getLabels());
     }
     getLabels() {
-        let headers = new http_1.Headers();
-        let token = this.userService.token;
-        headers.append('Authorization', 'Bearer ' + token.toString());
-        this.http.get('http://localhost:8000/labels/', { headers: headers })
+        this.http.get('labels/')
             .subscribe(labels => this.labelSource.next(labels.json()));
     }
 };
 LabelService = __decorate([
     core_1.Injectable(), 
-    __metadata('design:paramtypes', [http_1.Http, user_service_1.UserService])
+    __metadata('design:paramtypes', [http_service_1.HttpService, user_service_1.UserService])
 ], LabelService);
 exports.LabelService = LabelService;

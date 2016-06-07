@@ -6,13 +6,14 @@ import {FeedSourceService} from './feedsource.service';
 import {Http, Headers} from '@angular/http';
 import * as jQuery from 'jquery';
 import {Subject} from 'rxjs/Subject';
+import {HttpService} from './http.service';
 
 @Injectable()
 export class FeedService{
   private feedsSource = new Subject<Feed[]>();
   public feeds$ = this.feedsSource.asObservable();
   public feeds: Feed[] = [];
-    constructor(private http: Http){
+    constructor(private http: HttpService){
   }
   getFeeds(feedSources: FeedSource[]){
     this.feeds = []
@@ -21,7 +22,7 @@ export class FeedService{
     }
     else {
       for (let feedSource of feedSources){
-        this.http.get('http://localhost:8000/proxy/' + feedSource.sourceUrl).subscribe(res => this.parseRSS(res.text()));
+        this.http.get('proxy/' + feedSource.sourceUrl).subscribe(res => this.parseRSS(res.text()));
       }
     }
   }
