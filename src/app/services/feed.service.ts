@@ -7,13 +7,20 @@ import {Http, Headers} from '@angular/http';
 import * as jQuery from 'jquery';
 import {Subject} from 'rxjs/Subject';
 import {HttpService} from './http.service';
+import {FilterService} from './filter.service';
 
 @Injectable()
 export class FeedService{
   private feedsSource = new Subject<Feed[]>();
   public feeds$ = this.feedsSource.asObservable();
   public feeds: Feed[] = [];
-    constructor(private http: HttpService){
+  private filter: string;
+    constructor(private http: HttpService, private filterService: FilterService){
+      this.filter = this.filterService.getFilterString();
+      this.filterService.filter$.subscribe(filter => {
+        this.filter = filter;
+        this.queryFeeds;
+      });
   }
   getFeeds(feedSources: FeedSource[]){
     this.feeds = []
@@ -21,26 +28,27 @@ export class FeedService{
       this.feedsSource.next([]);
     }
     else {
-      for (let feedSource of feedSources){
-        this.http.get('proxy/' + feedSource.sourceUrl).subscribe(res => this.parseRSS(res.text()));
+      let body = [];
+      for (let feedSource of feedSources) {
+        body.push(feedSource.sourceUrl)
       }
+      this.http.post('getfeeds/',JSON.stringify(body))
+        .subscribe(res => this.queryFeeds())
     }
   }
 
-  parseRSS(xml: string){
-    let feeds: Feed[] = [];
-    let xmlDoc = jQuery.parseXML(xml);
-    let $xml = $( xmlDoc );
-    let $entries = $xml.find('item').each(function() {
-      let feed: Feed = new Feed();
-      feed.title = $(this).find('title').text();
-      feed.text = $(this).find('description').text();
-      feed.url = $(this).find('link').text();
-      feed.date = new Date($(this).find('pubDate').text());
-      feeds.push(feed);
-    })
-    this.feeds = this.feeds.concat(feeds);
-    this.feeds.sort((feeda, feedb) => feedb.date.valueOf() - feeda.date.valueOf())
-    this.feedsSource.next(this.feeds);
+  queryFeeds() {
+    this.filter = this.filterService.getFilterString();
+    console.log(this.filter)
+    this.http.post('feeds/feed/_search?size=300', this.filter, 'http://fisensee.ddns.net:9200/')
+      .subscribe(res => this.setFeeds(res.json().hits.hits));
+  }
+
+  setFeeds(queryHits) {
+    let feeds = [];
+    for (let hit of queryHits) {
+      feeds.push(hit._source);
+    }
+    this.feedsSource.next(feeds);
   }
 }

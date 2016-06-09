@@ -21,9 +21,9 @@ let LabelComponent = class LabelComponent {
         this.refreshService = refreshService;
         this.feedSourceService = feedSourceService;
         this.feedSources = [];
+        this.labels = [];
         this.newLabel = new label_1.Label('', [], '', 0, false);
         this.labelService.labels$.subscribe(labels => {
-            this.labels = labels;
             this.setLabels(labels);
             this.refreshFeedSources();
         });
@@ -49,10 +49,9 @@ let LabelComponent = class LabelComponent {
             this.labels = labels;
         }
         ;
-        activeLabels.forEach(label => label.active = false);
         labels.forEach(label => {
             activeLabels.forEach(activeLabel => {
-                if (label === activeLabel) {
+                if (label.url === activeLabel.url) {
                     label.active = true;
                 }
             });

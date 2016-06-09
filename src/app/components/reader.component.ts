@@ -15,13 +15,15 @@ import {Label} from '../models/label';
 import {NgClass} from '@angular/common';
 import {Observable} from 'rxjs/Rx';
 import {HttpService} from '../services/http.service';
+import {FilterService} from '../services/filter.service';
+import {FilterComponent} from './filter.component';
 
 @Component({
   selector: 'app',
   templateUrl: './app/reader.html',
   providers: [FeedSourceService, FeedService, LabelService,
-     UserService, RefreshService, HttpService, HTTP_PROVIDERS],
-  directives: [FeedComponent, FeedSourceComponent, LabelComponent, NgClass]
+     UserService, RefreshService, HttpService, FilterService, HTTP_PROVIDERS],
+  directives: [FeedComponent, FeedSourceComponent, LabelComponent, FilterComponent, NgClass]
 })
 
 @Injectable()

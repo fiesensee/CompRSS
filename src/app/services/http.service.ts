@@ -16,9 +16,8 @@ export class HttpService {
     this.headers.set('Authorization', 'Bearer ' + token.toString());
   }
 
-  public post(url: string, body){
-    console.log('saving: ' + body);
-    let request = this.http.post(this.rootUrl + url, body, {headers: this.headers});
+  public post(url: string, body, rootUrl=this.rootUrl){
+    let request = this.http.post(rootUrl + url, body, {headers: this.headers});
     // request.subscribe(res => this.headers.delete('Content-Type'));
     return request;
   }

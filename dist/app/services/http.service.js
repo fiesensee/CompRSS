@@ -23,9 +23,8 @@ let HttpService = class HttpService {
     setTokenHeaders(token) {
         this.headers.set('Authorization', 'Bearer ' + token.toString());
     }
-    post(url, body) {
-        console.log('saving: ' + body);
-        let request = this.http.post(this.rootUrl + url, body, { headers: this.headers });
+    post(url, body, rootUrl = this.rootUrl) {
+        let request = this.http.post(rootUrl + url, body, { headers: this.headers });
         return request;
     }
     get(url) {

@@ -17,7 +17,7 @@ import {RefreshService} from '../services/refresh.service';
 @Injectable()
 export class LabelComponent {
   public feedSources: FeedSource[] = [];
-  public labels: Label[];
+  public labels: Label[] = [];
   public newLabel: Label = new Label('',[], '', 0, false);
   constructor(
     private labelService: LabelService,
@@ -25,7 +25,6 @@ export class LabelComponent {
     private feedSourceService: FeedSourceService
   ) {
       this.labelService.labels$.subscribe(labels => {
-        this.labels = labels;
         this.setLabels(labels);
         this.refreshFeedSources();
       });
@@ -52,10 +51,9 @@ export class LabelComponent {
     if (activeLabels.length === 0) {
       this.labels = labels;
     };
-    activeLabels.forEach(label => label.active = false);
     labels.forEach(label => {
       activeLabels.forEach(activeLabel => {
-        if (label === activeLabel) {
+        if (label.url === activeLabel.url) {
           label.active = true;
         }
       });
@@ -76,9 +74,7 @@ export class LabelComponent {
   }
 
   deleteLabel(label: Label){
-    this.labelService.deleteLabel(label);
-
-    // this.activeLabel = this.defaultLabel;
+    this.labelService.deleteLabel(label)
   }
 
   saveNewLabel(){
@@ -94,7 +90,6 @@ export class LabelComponent {
       let index = label.feedSources.findIndex(source => source.url === feedSource.url);
       if (feedSource.active) {
         if (index === -1) {
-          // label.feedSources.splice(index,1);
           label.feedSources.push(feedSource);
         }
       }

@@ -9,13 +9,13 @@
 <div class="row" *ngFor="let feed of feeds" style="border-top: 1px solid grey; padding: 8px;"
 (click)="feed.expanded = !feed.expanded">
   <div class="col-md-8">
-    <a href="{{feed.url}}" target="_blank">{{feed.title}}</a>
+    <a href="{{feed.link}}" target="_blank">{{feed.title}}</a>
   </div>
   <div class="col-md-4">
-    {{feed.date | date:'medium'}}
+    {{feed.date}}
   </div>
   <div class="container-fluid" *ngIf="feed.expanded">
-    <div [innerHTML]="feed.text">
+    <div [innerHTML]="feed.description">
     </div>
   </div>
 </div>
