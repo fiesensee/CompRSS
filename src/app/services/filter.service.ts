@@ -12,7 +12,8 @@ export class FilterService {
       sort: [{date:{order: "desc"}}],
       query: {bool: {
         filter: [
-          {range: {date: {gte: "now-1d/d"}}}
+          {range: {date: {gte: "now-1d/d"}}},
+          {match_all: {}}
         ]
       }}
     };
@@ -25,16 +26,13 @@ export class FilterService {
 
   public setTermQuery(term: string) {
     if (term === '') {
-      delete this.filter.query.bool.filter[1];
+      this.filter.query.bool.filter[1] = {match_all: {}};
     }
     else {
-      if(this.filter.query.bool.filter.length === 1){
-        this.filter.query.bool.filter[1] = {};
-      }
       this.filter.query.bool.filter[1] = {
         or: [
           {fuzzy: {title: term}},
-          {fuzzy: {title: term}}
+          {fuzzy: {description: term}}
         ]
       }
     }
@@ -46,7 +44,6 @@ export class FilterService {
   }
 
   public setFilter(filter: {}) {
-    console.log(this.filter);
     this.filterSource.next(JSON.stringify(filter));
   }
 }

@@ -34,8 +34,8 @@ let RefreshService = class RefreshService {
         });
     }
     setAndRefreshFeedSources(feedSources) {
-        this.activeFeedSources = feedSources;
-        this.feedService.getFeeds(this.activeFeedSources);
+        this.feedService.setFeedSources(feedSources);
+        this.feedService.getFeeds();
     }
     refresh_all() {
         this.userService.getToken();
@@ -43,7 +43,7 @@ let RefreshService = class RefreshService {
         timer.subscribe(t => {
             this.feedSourceService.getFeedSources();
             this.labelService.getLabels();
-            this.feedService.getFeeds(this.activeFeedSources);
+            this.feedService.getFeeds();
         });
     }
 };

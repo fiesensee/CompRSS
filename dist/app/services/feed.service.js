@@ -19,13 +19,14 @@ let FeedService = class FeedService {
         this.feedsSource = new Subject_1.Subject();
         this.feeds$ = this.feedsSource.asObservable();
         this.feeds = [];
+        this.feedSources = [];
         this.filter = this.filterService.getFilterString();
-        this.filterService.filter$.subscribe(filter => {
-            this.filter = filter;
-            this.queryFeeds;
-        });
     }
-    getFeeds(feedSources) {
+    setFeedSources(feedSources) {
+        this.feedSources = feedSources;
+    }
+    getFeeds() {
+        let feedSources = this.feedSources;
         this.feeds = [];
         if (feedSources.length == 0) {
             this.feedsSource.next([]);
@@ -41,13 +42,13 @@ let FeedService = class FeedService {
     }
     queryFeeds() {
         this.filter = this.filterService.getFilterString();
-        console.log(this.filter);
-        this.http.post('feeds/feed/_search?size=300', this.filter, 'http://fisensee.ddns.net:9200/')
+        this.http.queryES('feeds/feed/_search?size=300', this.filter)
             .subscribe(res => this.setFeeds(res.json().hits.hits));
     }
     setFeeds(queryHits) {
         let feeds = [];
         for (let hit of queryHits) {
+            hit._source.date = new Date(hit._source.date);
             feeds.push(hit._source);
         }
         this.feedsSource.next(feeds);

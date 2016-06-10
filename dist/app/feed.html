@@ -12,7 +12,7 @@
     <a href="{{feed.link}}" target="_blank">{{feed.title}}</a>
   </div>
   <div class="col-md-4">
-    {{feed.date}}
+    {{feed.date | date:'medium'}}
   </div>
   <div class="container-fluid" *ngIf="feed.expanded">
     <div [innerHTML]="feed.description">

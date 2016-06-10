@@ -15,23 +15,35 @@ let HttpService = class HttpService {
     constructor(http, userService) {
         this.http = http;
         this.userService = userService;
-        this.headers = new http_1.Headers();
         this.rootUrl = 'https://comprest.herokuapp.com/';
-        this.userService.token$.subscribe(token => this.setTokenHeaders(token));
-        this.headers.set('Content-Type', 'application/json');
+        this.esUrl = 'http://fisensee.ddns.net:9200/';
+        this.token = "";
+        this.userService.token$.subscribe(token => this.token = token.toString());
     }
-    setTokenHeaders(token) {
-        this.headers.set('Authorization', 'Bearer ' + token.toString());
+    getTokenHeader() {
+        let headers = new http_1.Headers();
+        headers.set('Authorization', 'Bearer ' + this.token);
+        return headers;
     }
     post(url, body, rootUrl = this.rootUrl) {
-        let request = this.http.post(rootUrl + url, body, { headers: this.headers });
+        let headers = this.getTokenHeader();
+        headers.set('Content-Type', 'application/json');
+        let request = this.http.post(rootUrl + url, body, { headers: headers });
+        return request;
+    }
+    queryES(url, body) {
+        let headers = new http_1.Headers();
+        headers.set('Content-Type', 'application/json');
+        let request = this.http.post(this.esUrl + url, body, { headers: headers });
         return request;
     }
     get(url) {
-        return this.http.get(this.rootUrl + url, { headers: this.headers });
+        let headers = this.getTokenHeader();
+        return this.http.get(this.rootUrl + url, { headers: headers });
     }
     delete(url) {
-        return this.http.delete(url, { headers: this.headers });
+        let headers = this.getTokenHeader();
+        return this.http.delete(url, { headers: headers });
     }
 };
 HttpService = __decorate([

@@ -32,9 +32,8 @@ export class RefreshService {
   }
 
   public setAndRefreshFeedSources(feedSources: FeedSource[]) {
-    this.activeFeedSources = feedSources;
-    // this.refresh_all(); results in feedback loop
-    this.feedService.getFeeds(this.activeFeedSources);
+    this.feedService.setFeedSources(feedSources);
+    this.feedService.getFeeds();
   }
 
   public refresh_all() {
@@ -43,7 +42,7 @@ export class RefreshService {
     timer.subscribe(t => {
       this.feedSourceService.getFeedSources();
       this.labelService.getLabels();
-      this.feedService.getFeeds(this.activeFeedSources);
+      this.feedService.getFeeds();
     });
   }
 }

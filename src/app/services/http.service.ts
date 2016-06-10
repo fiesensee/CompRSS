@@ -5,29 +5,43 @@ import {Injectable} from '@angular/core';
 
 @Injectable()
 export class HttpService {
-  private headers = new Headers();
   private rootUrl: string = 'https://comprest.herokuapp.com/';
+  private esUrl: string = 'http://fisensee.ddns.net:9200/';
+  private token: string = ""
   constructor(private http: Http, private userService: UserService){
-    this.userService.token$.subscribe(token => this.setTokenHeaders(token));
-    this.headers.set('Content-Type', 'application/json');
+    this.userService.token$.subscribe(token => this.token = token.toString());
   }
 
-  private setTokenHeaders(token: string){
-    this.headers.set('Authorization', 'Bearer ' + token.toString());
+
+
+  private getTokenHeader(): Headers {
+    let headers = new Headers();
+    headers.set('Authorization', 'Bearer ' + this.token);
+    return headers;
   }
 
   public post(url: string, body, rootUrl=this.rootUrl){
-    let request = this.http.post(rootUrl + url, body, {headers: this.headers});
-    // request.subscribe(res => this.headers.delete('Content-Type'));
+    let headers = this.getTokenHeader();
+    headers.set('Content-Type', 'application/json')
+    let request = this.http.post(rootUrl + url, body, {headers: headers});
+    return request;
+  }
+
+  public queryES(url: string, body){
+    let headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    let request = this.http.post(this.esUrl + url, body, {headers: headers});
     return request;
   }
 
   public get(url: string){
-    return this.http.get(this.rootUrl + url, {headers: this.headers});
+    let headers = this.getTokenHeader();
+    return this.http.get(this.rootUrl + url, {headers: headers});
   }
 
   public delete(url: string){
+    let headers = this.getTokenHeader();
     // uses just the given url, because its already the full and correct one
-    return this.http.delete(url, {headers: this.headers});
+    return this.http.delete(url, {headers: headers});
   }
 }
