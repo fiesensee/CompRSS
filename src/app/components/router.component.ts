@@ -4,7 +4,7 @@ import {NgForm} from '@angular/common';
 import {ReaderComponent} from './reader.component';
 import {FeedSourceComponent} from './feedsource.component';
 import {LabelComponent} from './label.component';
-
+import {UserComponent} from './user.component';
 
 @Component({
   selector: 'router',
@@ -12,8 +12,7 @@ import {LabelComponent} from './label.component';
   template: `<a [routerLink]="['/reader']">reader</a>test<router-outlet></router-outlet>`
 })
 @Routes([
-  {path: '/feedsources', component: FeedSourceComponent},
-  {path: '/labels', component: LabelComponent},
+  {path: '/login', component: UserComponent},
   {path: '/reader', component: ReaderComponent},
   {path: '*', component: ReaderComponent}
 ])

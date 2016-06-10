@@ -23,21 +23,28 @@ let UserService = class UserService {
         this.client_secret = 'qqIIPLKgdzez8nCYUXkM9847GijrQmFzHQMinJ80KINMukHwQhhG8QzhPWmttTAwuEZ58V0qpWSoSVaOXMQyPsM74Xk4MlruqyAtGbmsQtmsMmNFatlJHuWiRuqZdjNI';
     }
     getToken() {
+        let request = this.authenticate().subscribe(res => this.setToken(res.json()));
+    }
+    authenticate() {
         let body = [
             'grant_type=password',
-            'username=' + this.username,
-            'password=' + this.password,
+            'username=' + this.user.username,
+            'password=' + this.user.password,
             'client_id=' + this.client_id,
             'client_secret=' + this.client_secret
         ];
         let headers = new http_1.Headers();
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        this.http.post('https://comprest.herokuapp.com/o/token/', body.join('&'), { headers: headers })
-            .subscribe(res => this.setToken(res.json()));
+        let request = this.http.post('https://comprest.herokuapp.com/o/token/', body.join('&'), { headers: headers });
+        return request;
     }
     setToken(token) {
         this.tokenSource.next(token.access_token);
         this.token = token.access_token;
+    }
+    loginUser(user) {
+        this.user = user;
+        return this.authenticate();
     }
 };
 UserService = __decorate([

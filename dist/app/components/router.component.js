@@ -11,8 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const core_1 = require('@angular/core');
 const router_1 = require('@angular/router');
 const reader_component_1 = require('./reader.component');
-const feedsource_component_1 = require('./feedsource.component');
-const label_component_1 = require('./label.component');
+const user_component_1 = require('./user.component');
 let RouterComponent = class RouterComponent {
 };
 RouterComponent = __decorate([
@@ -22,8 +21,7 @@ RouterComponent = __decorate([
         template: `<a [routerLink]="['/reader']">reader</a>test<router-outlet></router-outlet>`
     }),
     router_1.Routes([
-        { path: '/feedsources', component: feedsource_component_1.FeedSourceComponent },
-        { path: '/labels', component: label_component_1.LabelComponent },
+        { path: '/login', component: user_component_1.UserComponent },
         { path: '/reader', component: reader_component_1.ReaderComponent },
         { path: '*', component: reader_component_1.ReaderComponent }
     ]), 

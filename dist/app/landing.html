@@ -1,0 +1,41 @@
+<div class="row" style="padding-top: 10%">
+  <div class="col-md-4 col-md-offset-4">
+    <div class="text-center">
+      <ul class="nav nav-tabs">
+        <li [ngClass]="{active: !register}">
+          <a (click)="register = false">Login</a>
+        </li>
+        <li [ngClass]="{active: register}">
+          <a (click)="register = true">Register</a>
+        </li>
+      </ul>
+      <div *ngIf="!register" style="padding-top: 30px">
+        <form (ngSubmit)="login()" #loginForm="ngForm">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control"
+            required [(ngModel)]="user.username" ngControl="username"
+            #username="ngForm" />
+            <div [hidden]="username.valid || username.pristine" class="alert alert-danger">
+              Username is required!
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+          </div>
+          <input type="password" class="form-control"
+          required [(ngModel)]="user.password" ngControl="password"
+          #password="ngForm" />
+          <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+            Password is required!
+          </div>
+          <button type="submit" class="btn btn-default" [disabled]="!loginForm.form.valid">Login</button>
+        </form>
+        <label *ngIf="authFailure">Auth Failure</label>
+      </div>
+      <div *ngIf="register">
+
+      </div>
+    </div>
+  </div>
+</div>

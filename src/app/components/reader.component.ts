@@ -21,8 +21,8 @@ import {FilterComponent} from './filter.component';
 @Component({
   selector: 'app',
   templateUrl: './app/reader.html',
-  providers: [FeedSourceService, FeedService, LabelService,
-     UserService, RefreshService, HttpService, FilterService, HTTP_PROVIDERS],
+  providers: [FeedSourceService, FeedService, LabelService, RefreshService,
+     HttpService, FilterService, HTTP_PROVIDERS],
   directives: [FeedComponent, FeedSourceComponent, LabelComponent, FilterComponent, NgClass]
 })
 

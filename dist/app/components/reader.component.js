@@ -15,7 +15,6 @@ const feed_component_1 = require('./feed.component');
 const label_component_1 = require('./label.component');
 const feedsource_service_1 = require('../services/feedsource.service');
 const feed_service_1 = require('../services/feed.service');
-const user_service_1 = require('../services/user.service');
 const label_service_1 = require('../services/label.service');
 const refresh_service_1 = require('../services/refresh.service');
 const common_1 = require('@angular/common');
@@ -34,8 +33,8 @@ ReaderComponent = __decorate([
     core_1.Component({
         selector: 'app',
         templateUrl: './app/reader.html',
-        providers: [feedsource_service_1.FeedSourceService, feed_service_1.FeedService, label_service_1.LabelService,
-            user_service_1.UserService, refresh_service_1.RefreshService, http_service_1.HttpService, filter_service_1.FilterService, http_1.HTTP_PROVIDERS],
+        providers: [feedsource_service_1.FeedSourceService, feed_service_1.FeedService, label_service_1.LabelService, refresh_service_1.RefreshService,
+            http_service_1.HttpService, filter_service_1.FilterService, http_1.HTTP_PROVIDERS],
         directives: [feed_component_1.FeedComponent, feedsource_component_1.FeedSourceComponent, label_component_1.LabelComponent, filter_component_1.FilterComponent, common_1.NgClass]
     }),
     core_1.Injectable(), 
