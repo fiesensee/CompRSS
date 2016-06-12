@@ -42,7 +42,7 @@ export class FeedService{
 
   queryFeeds() {
     this.filter = this.filterService.getFilterString();
-    this.http.queryES('feeds/feed/_search?size=300', this.filter)
+    this.http.queryES('feeds/feed/_search?size=50', this.filter)
       .subscribe(res => this.setFeeds(res.json().hits.hits));
   }
 

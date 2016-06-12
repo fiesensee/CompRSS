@@ -22,23 +22,36 @@ const common_1 = require('@angular/common');
 const http_service_1 = require('../services/http.service');
 const filter_service_1 = require('../services/filter.service');
 const filter_component_1 = require('./filter.component');
+const router_1 = require('@angular/router');
 let ReaderComponent = class ReaderComponent {
-    constructor(refreshService) {
+    constructor(refreshService, userService, router) {
         this.refreshService = refreshService;
+        this.userService = userService;
+        this.router = router;
     }
     ngOnInit() {
-        this.refreshService.startTimer();
+        console.log(this.userService.getUser());
+        if (this.userService.getUser() !== null) {
+            this.refreshService.startTimer();
+        }
+        else {
+            this.router.navigateByUrl('/login');
+        }
+    }
+    logout() {
+        this.userService.logoutUser();
+        this.router.navigateByUrl('/login');
     }
 };
 ReaderComponent = __decorate([
     core_1.Component({
         selector: 'app',
         templateUrl: './app/reader.html',
-        providers: [feedsource_service_1.FeedSourceService, feed_service_1.FeedService, label_service_1.LabelService,
-            user_service_1.UserService, refresh_service_1.RefreshService, http_service_1.HttpService, filter_service_1.FilterService, http_1.HTTP_PROVIDERS],
+        providers: [feedsource_service_1.FeedSourceService, feed_service_1.FeedService, label_service_1.LabelService, refresh_service_1.RefreshService,
+            http_service_1.HttpService, filter_service_1.FilterService, http_1.HTTP_PROVIDERS],
         directives: [feed_component_1.FeedComponent, feedsource_component_1.FeedSourceComponent, label_component_1.LabelComponent, filter_component_1.FilterComponent, common_1.NgClass]
     }),
     core_1.Injectable(), 
-    __metadata('design:paramtypes', [refresh_service_1.RefreshService])
+    __metadata('design:paramtypes', [refresh_service_1.RefreshService, user_service_1.UserService, router_1.Router])
 ], ReaderComponent);
 exports.ReaderComponent = ReaderComponent;

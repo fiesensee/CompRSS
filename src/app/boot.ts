@@ -7,4 +7,4 @@ import {RefreshService} from './services/refresh.service';
 import {UserService} from './services/user.service';
 
 
-bootstrap(RouterComponent, [HTTP_PROVIDERS, ROUTER_PROVIDERS]);
+bootstrap(RouterComponent, [HTTP_PROVIDERS, ROUTER_PROVIDERS, UserService]);
