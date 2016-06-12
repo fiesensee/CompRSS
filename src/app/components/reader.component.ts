@@ -17,6 +17,7 @@ import {Observable} from 'rxjs/Rx';
 import {HttpService} from '../services/http.service';
 import {FilterService} from '../services/filter.service';
 import {FilterComponent} from './filter.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app',
@@ -30,29 +31,22 @@ import {FilterComponent} from './filter.component';
 export class ReaderComponent {
 
 
-  constructor(private refreshService: RefreshService){}
+  constructor(private refreshService: RefreshService, private userService: UserService,
+    private router: Router){}
 
   ngOnInit() {
-    // this.userService.getToken();
-    // this.startTimer();
-    this.refreshService.startTimer();
+    console.log(this.userService.getUser());
+    if (this.userService.getUser() !== null) {
+      this.refreshService.startTimer();
+    }
+    else {
+      this.router.navigateByUrl('/login');
+    }
   }
 
-  // startTimer(){
-  //   let timer = Observable.timer(1500,1000 * 60 * 5);
-  //   timer.subscribe(t => {
-  //     console.log('refreshing');
-  //     this.refresh();
-  //   });
-  // }
-  //
-  // refresh() {
-  //   this.userService.getToken();
-  //   let timer = Observable.timer(1000);
-  //   timer.subscribe(t => {
-  //     this.feedSourceService.getFeedSources();
-  //     this.labelService.getLabels();
-  //   })
-  // }
+  public logout() {
+    this.userService.logoutUser();
+    this.router.navigateByUrl('/login');
+  }
 
 }

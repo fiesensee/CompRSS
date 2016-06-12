@@ -11,40 +11,70 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const http_1 = require('@angular/http');
 const Subject_1 = require('rxjs/Subject');
 const core_1 = require('@angular/core');
+const user_1 = require('../models/user');
 let UserService = class UserService {
     constructor(http) {
         this.http = http;
         this.token = 'undefined';
         this.tokenSource = new Subject_1.Subject();
         this.token$ = this.tokenSource.asObservable();
-        this.username = 'felix';
-        this.password = 'sinisterkid10';
+        this.user = null;
+        this.restUrl = 'https://comprest.herokuapp.com/';
+        this.superUser = new user_1.User();
         this.client_id = 'nNRd7e60nzUNlzlpM0wgw3Bvq0ck9TkNN43was44';
         this.client_secret = 'qqIIPLKgdzez8nCYUXkM9847GijrQmFzHQMinJ80KINMukHwQhhG8QzhPWmttTAwuEZ58V0qpWSoSVaOXMQyPsM74Xk4MlruqyAtGbmsQtmsMmNFatlJHuWiRuqZdjNI';
+        this.superUser.username = 'felix';
+        this.superUser.password = 'sinisterkid10';
     }
     getToken() {
-        let request = this.authenticate().subscribe(res => this.setToken(res.json()));
+        console.log('getting token');
+        this.authenticate(this.user).subscribe(res => this.setToken(res.json().access_token));
     }
-    authenticate() {
+    getSuperUserToken() {
+        let request = this.authenticate(this.superUser);
+        return request;
+    }
+    setToken(token) {
+        this.tokenSource.next(token);
+        this.token = token;
+    }
+    authenticate(user) {
         let body = [
             'grant_type=password',
-            'username=' + this.user.username,
-            'password=' + this.user.password,
+            'username=' + user.username,
+            'password=' + user.password,
             'client_id=' + this.client_id,
             'client_secret=' + this.client_secret
         ];
         let headers = new http_1.Headers();
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        let request = this.http.post('https://comprest.herokuapp.com/o/token/', body.join('&'), { headers: headers });
+        let request = this.http.post(this.restUrl + 'o/token/', body.join('&'), { headers: headers });
         return request;
     }
-    setToken(token) {
-        this.tokenSource.next(token.access_token);
-        this.token = token.access_token;
-    }
     loginUser(user) {
+        console.log('loggin in');
         this.user = user;
-        return this.authenticate();
+        return this.authenticate(user);
+    }
+    getUser() {
+        return this.user;
+    }
+    isAuthenticated(user) {
+        let emptyUser = new user_1.User();
+        if (this.user === emptyUser) {
+            return false;
+        }
+    }
+    logoutUser() {
+        this.user = null;
+    }
+    registerUser(user, token) {
+        let request;
+        let headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        request = this.http.post(this.restUrl + 'users/', JSON.stringify(user), { headers: headers });
+        return request;
     }
 };
 UserService = __decorate([

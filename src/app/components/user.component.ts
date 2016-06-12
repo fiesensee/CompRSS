@@ -15,6 +15,8 @@ export class UserComponent {
   public authFailure: boolean = false;
   public user: User = new User();
   public newUser: User = new User();
+  public confirmPassword: string = '';
+  public passwordConfirmed: boolean = true;
   constructor(private userService: UserService, private router: Router){
   }
 
@@ -30,7 +32,23 @@ export class UserComponent {
     });
   }
 
-  registerNewUser() {
-
+  public registerNewUser() {
+    if(this.newUser.password !== this.confirmPassword) {
+      this.passwordConfirmed = false;
+    }
+    else {
+      this.passwordConfirmed = true;
+      this.confirmPassword = '';
+      console.log('registering');
+      this.userService.getSuperUserToken()
+        .subscribe(res => {
+          this.userService.registerUser(this.newUser, res.json().access_token.toString())
+            .subscribe(res => {
+              this.user = this.newUser;
+              this.newUser = new User();
+              this.login();
+          });
+      });
+    }
   }
 }

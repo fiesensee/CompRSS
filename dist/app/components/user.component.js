@@ -21,6 +21,8 @@ let UserComponent = class UserComponent {
         this.authFailure = false;
         this.user = new user_1.User();
         this.newUser = new user_1.User();
+        this.confirmPassword = '';
+        this.passwordConfirmed = true;
     }
     login() {
         let request = this.userService.loginUser(this.user);
@@ -34,6 +36,23 @@ let UserComponent = class UserComponent {
         });
     }
     registerNewUser() {
+        if (this.newUser.password !== this.confirmPassword) {
+            this.passwordConfirmed = false;
+        }
+        else {
+            this.passwordConfirmed = true;
+            this.confirmPassword = '';
+            console.log('registering');
+            this.userService.getSuperUserToken()
+                .subscribe(res => {
+                this.userService.registerUser(this.newUser, res.json().access_token.toString())
+                    .subscribe(res => {
+                    this.user = this.newUser;
+                    this.newUser = new user_1.User();
+                    this.login();
+                });
+            });
+        }
     }
 };
 UserComponent = __decorate([

@@ -12,7 +12,7 @@ export class FilterService {
       sort: [{date:{order: "desc"}}],
       query: {bool: {
         filter: [
-          {range: {date: {gte: "now-1d/d"}}},
+          {range: {date: {gte: "now-0d/d"}}},
           {match_all: {}}
         ]
       }}
